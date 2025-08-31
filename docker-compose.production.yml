@@ -1,0 +1,324 @@
+# Production Docker Compose with Load Balancing and Auto-scaling
+# METAH Travel Platform - Production Deployment Configuration
+
+version: '3.8'
+
+services:
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: metah-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - frontend-1
+      - frontend-2
+      - frontend-3
+    networks:
+      - metah-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`metah.travel`)"
+      - "traefik.http.routers.nginx.tls=true"
+
+  # Frontend Instances (Auto-scaled)
+  frontend-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: metah-frontend-1
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=https://api.metah.travel
+      - REACT_APP_CDN_URL=https://cdn.metah.travel
+      - REACT_APP_INSTANCE_ID=frontend-1
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - metah-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  frontend-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: metah-frontend-2
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=https://api.metah.travel
+      - REACT_APP_CDN_URL=https://cdn.metah.travel
+      - REACT_APP_INSTANCE_ID=frontend-2
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - metah-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  frontend-3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: metah-frontend-3
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=https://api.metah.travel
+      - REACT_APP_CDN_URL=https://cdn.metah.travel
+      - REACT_APP_INSTANCE_ID=frontend-3
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - metah-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # Redis for Session Management and Caching
+  redis:
+    image: redis:7-alpine
+    container_name: metah-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis-data:/data
+    networks:
+      - metah-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  # PostgreSQL Database (Primary)
+  postgres-primary:
+    image: postgres:15-alpine
+    container_name: metah-postgres-primary
+    environment:
+      - POSTGRES_DB=metah_travel
+      - POSTGRES_USER=metah_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    volumes:
+      - postgres-primary-data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+      - ./postgres/primary.conf:/etc/postgresql/postgresql.conf
+    networks:
+      - metah-network
+    restart: unless-stopped
+    secrets:
+      - postgres_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metah_user -d metah_travel"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+
+  # PostgreSQL Database (Read Replica)
+  postgres-replica:
+    image: postgres:15-alpine
+    container_name: metah-postgres-replica
+    environment:
+      - POSTGRES_DB=metah_travel
+      - POSTGRES_USER=metah_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_PRIMARY_HOST=postgres-primary
+    volumes:
+      - postgres-replica-data:/var/lib/postgresql/data
+      - ./postgres/replica.conf:/etc/postgresql/postgresql.conf
+    networks:
+      - metah-network
+    restart: unless-stopped
+    secrets:
+      - postgres_password
+    depends_on:
+      - postgres-primary
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metah_user -d metah_travel"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+  # Monitoring and Metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: metah-prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - metah-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: metah-grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_password
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - metah-network
+    restart: unless-stopped
+    secrets:
+      - grafana_password
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+
+  # Auto-scaler Service
+  autoscaler:
+    build:
+      context: ./autoscaler
+      dockerfile: Dockerfile
+    container_name: metah-autoscaler
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - PROMETHEUS_URL=http://prometheus:9090
+      - MIN_INSTANCES=2
+      - MAX_INSTANCES=10
+      - CPU_THRESHOLD=70
+      - MEMORY_THRESHOLD=80
+      - SCALE_UP_COOLDOWN=300
+      - SCALE_DOWN_COOLDOWN=600
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./autoscaler/config:/app/config:ro
+    networks:
+      - metah-network
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: 256M
+
+  # Health Check Service
+  health-monitor:
+    build:
+      context: ./health-monitor
+      dockerfile: Dockerfile
+    container_name: metah-health-monitor
+    environment:
+      - CHECK_INTERVAL=30
+      - ALERT_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - SERVICES=frontend-1,frontend-2,frontend-3,nginx,redis,postgres-primary
+    volumes:
+      - ./health-monitor/config:/app/config:ro
+    networks:
+      - metah-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 128M
+
+networks:
+  metah-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  redis-data:
+    driver: local
+  postgres-primary-data:
+    driver: local
+  postgres-replica-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+
+secrets:
+  postgres_password:
+    file: ./secrets/postgres_password.txt
+  grafana_password:
+    file: ./secrets/grafana_password.txt

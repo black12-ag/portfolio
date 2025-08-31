@@ -1,0 +1,7 @@
+This folder is ready for your hotel booking demo video.
+
+Current status: Waiting for compressed video file
+Expected filename: hotel-booking-demo.mp4
+Target size: 15-25MB (down from 368MB)
+
+The video player is fully configured and ready!

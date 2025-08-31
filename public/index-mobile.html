@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Metah - Your Global Travel Hub</title>
+    <meta name="description" content="Discover, book, and manage your perfect accommodations worldwide with Metah - the comprehensive travel platform for modern travelers and hosts." />
+    <meta name="author" content="Metah" />
+    <meta name="keywords" content="travel, accommodation, booking, hotels, vacation rentals, travel hub, global travel" />
+
+    <meta property="og:title" content="Metah - Your Global Travel Hub" />
+    <meta property="og:description" content="Discover, book, and manage your perfect accommodations worldwide with Metah." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/black12-ag/Metah" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Metah - Your Global Travel Hub" />
+    <meta name="twitter:description" content="Discover, book, and manage your perfect accommodations worldwide with Metah." />
+    
+    <!-- Mobile-specific meta tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./assets/vendor-react-DDL70NcP.js" as="script">
+    <link rel="preload" href="./assets/index-RSrad0vF.js" as="script">
+    <link rel="preload" href="./assets/index-B0CnCcW1.css" as="style">
+    
+    <!-- Critical loading indicator -->
+    <style>
+      #mobile-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        z-index: 9999;
+      }
+      
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Mobile loading screen -->
+    <div id="mobile-loading">
+      <div class="spinner"></div>
+      <h2>Metah Travel</h2>
+      <p>Loading your travel experience...</p>
+    </div>
+    
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Hide loading screen when app is ready -->
+    <script>
+      // Mobile-specific loading handler
+      function hideMobileLoading() {
+        const loading = document.getElementById('mobile-loading');
+        if (loading) {
+          loading.classList.add('fade-out');
+          setTimeout(() => {
+            loading.style.display = 'none';
+          }, 500);
+        }
+      }
+      
+      // Hide loading when React app mounts
+      const observer = new MutationObserver((mutations) => {
+        const root = document.getElementById('root');
+        if (root && root.children.length > 0) {
+          hideMobileLoading();
+          observer.disconnect();
+        }
+      });
+      
+      observer.observe(document.getElementById('root'), { 
+        childList: true, 
+        subtree: true 
+      });
+      
+      // Fallback: hide loading after 10 seconds
+      setTimeout(hideMobileLoading, 10000);
+      
+      // Error handling
+      window.addEventListener('error', (e) => {
+        console.error('Mobile app error:', e);
+        const loading = document.getElementById('mobile-loading');
+        if (loading) {
+          loading.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+              <h2>⚠️ Loading Error</h2>
+              <p>Please check your connection and try again.</p>
+              <button onclick="window.location.reload()" style="
+                background: white;
+                color: #667eea;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                margin-top: 20px;
+                cursor: pointer;
+                font-size: 16px;
+              ">
+                Reload App
+              </button>
+            </div>
+          `;
+        }
+      });
+    </script>
+  </body>
+</html>

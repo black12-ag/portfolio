@@ -1,0 +1,66 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+
+# Mobile platforms
+ios
+android
+
+# Backend (deployed separately)
+backend
+
+# Coverage reports
+coverage
+
+# Archives and backups
+*.zip
+*.tar.gz
+*.rar
+
+# Documentation folders
+docs
+Documentation*
+
+# Development files
+*.log
+.env.local
+.env.*.local
+
+# IDE files
+.vscode
+.idea
+
+# Cache directories
+.cache
+.next
+.nuxt
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Netlify build output
+netlify
+
+# Test files
+*.test.*
+__tests__
+
+# Storybook
+storybook-static
+
+# Capacitor builds
+ios/App/build
+android/app/build

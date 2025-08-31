@@ -1,0 +1,355 @@
+# METAH Travel Platform - Claude Project Context
+
+## Project Overview
+
+METAH Travel Platform is a comprehensive hotel booking and travel management system with web and mobile applications. This is a multi-platform travel booking platform built with modern technologies and comprehensive business features.
+
+### Architecture
+- **Frontend**: React 18.3 + TypeScript + Vite
+- **Mobile**: Capacitor-based hybrid apps (iOS + Android)
+- **Backend**: NestJS + MongoDB + Supabase
+- **Payments**: Stripe integration
+- **Hotel API**: LiteAPI for real hotel data
+- **Styling**: Tailwind CSS + Radix UI components
+- **Languages**: Multi-language support with i18next
+- **Currency**: Multi-currency support with real-time conversion
+
+### Current Status (August 2024)
+- ✅ **Web Application**: Fully featured with 100+ pages and components
+- 🟡 **Mobile Apps**: Basic functionality with significant feature gaps
+- ✅ **Backend**: Complete API with authentication, booking, and management systems
+- ✅ **Third-party Integrations**: Stripe, LiteAPI, Supabase, Google Analytics
+
+## Project Structure
+
+```
+metah-v2/
+├── src/                    # Web application source
+│   ├── components/         # React components (100+ components)
+│   ├── pages/             # Application pages (50+ pages)
+│   ├── mobile/            # Mobile-specific components and pages
+│   ├── contexts/          # React contexts (Auth, Currency, Language, Theme)
+│   ├── hooks/             # Custom React hooks
+│   ├── lib/               # Utilities and helpers
+│   └── services/          # API services and integrations
+├── backend/               # NestJS backend API
+├── ios/                   # iOS app configuration (Capacitor)
+├── android/              # Android app configuration (Capacitor)
+├── public/               # Static assets
+└── docs/                 # Documentation
+```
+
+## Key Features Implemented
+
+### Web Application (Complete)
+1. **Authentication System**
+   - Login/Register with multiple methods
+   - Two-factor authentication (2FA)
+   - Magic link authentication
+   - OAuth integrations
+   - Session management
+
+2. **Hotel Booking System**
+   - LiteAPI integration for real hotel data
+   - Advanced search with filters
+   - Interactive maps with hotel markers
+   - Complete booking flow
+   - Stripe payment processing
+   - Booking management and history
+
+3. **User Management**
+   - Comprehensive user profiles
+   - Multi-role system (Guest, Host, Agent, Admin, Staff)
+   - Preference management
+   - Wishlist and saved searches
+
+4. **Admin & Business Tools**
+   - Complete admin dashboard
+   - Property management system
+   - Staff management (Manager, Reception, Housekeeping, Kitchen, Security, Maintenance)
+   - Agent tools and routing system
+   - Host management features
+   - Analytics and reporting
+
+5. **Advanced Features**
+   - Multi-language support (25+ languages)
+   - Multi-currency support with real-time conversion
+   - Review and rating system
+   - Price alerts and notifications
+   - Social features and sharing
+   - GDPR compliance tools
+   - Security dashboard
+   - Audit logging
+
+### Mobile Apps (Basic Implementation)
+1. **Core Navigation**
+   - Bottom navigation (Home, Search, Wishlist, Profile, Booking)
+   - Mobile-optimized layouts
+   - Touch-friendly interactions
+
+2. **Capacitor Integration**
+   - Camera access for QR scanning
+   - GPS location services
+   - Push and local notifications
+   - Haptic feedback
+   - Device information access
+
+3. **Basic Hotel Display**
+   - Simple hotel cards
+   - Basic search functionality
+   - Favorite/wishlist feature
+
+## Critical Missing Features on Mobile
+
+### Priority P0 (Blockers)
+- Authentication system (login/register)
+- Complete hotel booking flow
+- Payment integration (Stripe)
+- Hotel detail pages
+
+### Priority P1 (High Impact)
+- Admin dashboard access
+- Advanced search and filtering
+- Map integration
+- Multi-language/currency support
+
+### Priority P2 (Medium Impact)
+- Review system
+- Social features
+- Advanced notifications
+- Staff management tools
+
+## Development Roadmap (8-12 weeks)
+
+### Phase 1: Critical Foundation (Weeks 1-3)
+**Sprint 1: Authentication System**
+- Implement complete auth flow on mobile
+- Add session persistence
+- Create profile management screens
+
+**Sprint 2: Hotel Booking Core**
+- Build hotel detail pages
+- Create booking flow components
+- Integrate Stripe payments
+- Add booking confirmation
+
+### Phase 2: Enhanced Discovery (Weeks 4-6)
+**Sprint 3: Advanced Search**
+- Implement LiteAPI search integration
+- Add comprehensive filters
+- Create map integration
+- Optimize search results
+
+**Sprint 4: User Experience**
+- Add multi-language support
+- Implement currency conversion
+- Enhance loading states
+- Improve error handling
+
+### Phase 3: Business Features (Weeks 7-10)
+**Sprint 5: Admin Dashboard**
+- Create mobile admin interface
+- Add property management
+- Implement basic analytics
+- Build staff management screens
+
+**Sprint 6: Advanced Features**
+- Add review system
+- Implement social sharing
+- Create notification center
+- Build loyalty program interface
+
+### Phase 4: Business Operations (Weeks 11-12)
+**Sprint 7: Staff Management**
+- Reception dashboard
+- Housekeeping tools
+- Maintenance management
+- Kitchen/restaurant tools
+
+**Sprint 8: Analytics & Compliance**
+- Analytics dashboards
+- Report generation
+- Audit logging
+- GDPR compliance tools
+
+## Technical Guidelines
+
+### Code Standards
+- TypeScript strict mode
+- ESLint + Prettier formatting
+- Component-based architecture
+- Responsive design (mobile-first)
+- Accessibility compliance (WCAG 2.1)
+
+### API Integration
+- RESTful API design
+- Error handling and retry logic
+- Offline data caching
+- Real-time synchronization
+- Rate limiting compliance
+
+### Mobile Best Practices
+- Native-feeling interactions
+- Platform-specific optimizations
+- Performance monitoring
+- Crash reporting
+- Progressive Web App features
+
+### Testing Strategy
+- Unit tests for components
+- Integration tests for booking flow
+- E2E tests for critical paths
+- Device testing across platforms
+- Performance testing
+
+## Environment Configuration
+
+### Development Environment
+```bash
+# Install dependencies
+npm install
+
+# Start web development server
+npm run dev
+
+# Build for mobile
+npm run build:mobile
+
+# iOS development
+npm run ios:dev
+
+# Android development
+npm run android:dev
+```
+
+### Environment Variables Required
+- `VITE_SUPABASE_URL` - Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` - Supabase anonymous key
+- `VITE_STRIPE_PUBLIC_KEY` - Stripe public key
+- `VITE_API_URL` - Backend API URL
+- `VITE_LITEAPI_KEY` - LiteAPI integration key
+- `VITE_GOOGLE_MAPS_API_KEY` - Google Maps API key
+
+## Common Development Tasks
+
+### Adding New Mobile Pages
+1. Create component in `src/mobile/pages/`
+2. Use `MobileLayout` wrapper
+3. Add route to `src/mobile/MobileApp.tsx`
+4. Ensure responsive design
+5. Add proper navigation
+
+### Implementing New Features
+1. Check web implementation first
+2. Adapt UI for mobile constraints
+3. Leverage existing API endpoints
+4. Add mobile-specific optimizations
+5. Test on actual devices
+
+### Working with Capacitor
+1. Use `MobileIntegration` class for device features
+2. Handle permissions properly
+3. Test on both iOS and Android
+4. Add fallbacks for web browsers
+5. Follow platform guidelines
+
+## Key Files and Directories
+
+### Critical Configuration Files
+- `capacitor.config.ts` - Capacitor configuration
+- `package.json` - Dependencies and scripts
+- `vite.config.ts` - Build configuration
+- `tailwind.config.js` - Styling configuration
+
+### Important Components
+- `src/components/Navbar.tsx` - Main navigation
+- `src/mobile/layouts/MobileLayout.tsx` - Mobile wrapper
+- `src/mobile/capacitorIntegration.ts` - Device integration
+- `src/contexts/AuthContext.tsx` - Authentication state
+- `src/services/realLiteApiService.ts` - Hotel API integration
+
+### Key Pages
+- `src/pages/Index.tsx` - Main landing page
+- `src/mobile/pages/HomePage.tsx` - Mobile home
+- `src/pages/SearchResults.tsx` - Hotel search results
+- `src/pages/HotelDetail.tsx` - Hotel detail page
+- `src/pages/AdminDashboard.tsx` - Admin interface
+
+## Current Challenges & Solutions
+
+### Challenge 1: Mobile Feature Parity
+**Problem**: Mobile apps lack 80% of web features
+**Solution**: Follow the 8-sprint roadmap in the PRD
+
+### Challenge 2: Authentication on Mobile
+**Problem**: No login/register functionality on mobile
+**Solution**: Priority P0 - implement in Sprint 1
+
+### Challenge 3: Booking Flow Completion
+**Problem**: Users can't complete bookings on mobile
+**Solution**: Priority P0 - implement in Sprint 2
+
+### Challenge 4: Business User Access
+**Problem**: Staff/admin can't use mobile for work
+**Solution**: Priority P1 - implement in Sprints 5-7
+
+## Success Metrics
+
+### User Metrics
+- Mobile app downloads and retention
+- Booking conversion rates
+- Session duration and engagement
+- User satisfaction scores
+
+### Business Metrics
+- Revenue per mobile user
+- Support ticket reduction
+- Staff productivity improvements
+- Admin task completion rates
+
+### Technical Metrics
+- App performance scores
+- Crash rate < 1%
+- Load time < 3 seconds
+- API response time < 500ms
+
+## Resources and Documentation
+
+### Internal Documentation
+- `MOBILE_APP_FEATURE_PARITY_PRD.md` - Complete feature gap analysis
+- `docs/` - Technical documentation
+- `README.md` - Setup and deployment instructions
+
+### External Resources
+- [Capacitor Documentation](https://capacitorjs.com/docs)
+- [React Native Documentation](https://reactnative.dev/docs/getting-started)
+- [Stripe Mobile SDK](https://stripe.com/docs/mobile)
+- [LiteAPI Documentation](https://docs.liteapi.travel/)
+
+## Team Recommendations
+
+### Immediate Focus (Next 2-4 weeks)
+1. **Mobile Authentication** - Unblock user registration/login
+2. **Hotel Booking Flow** - Enable revenue generation
+3. **Payment Integration** - Complete the booking process
+4. **Multi-language Support** - Expand market reach
+
+### Resource Allocation
+- 2-3 Mobile developers (React Native/Capacitor experience)
+- 1 Backend developer (API integration support)
+- 1 UI/UX designer (mobile-specific designs)
+- 1 QA engineer (mobile testing expertise)
+
+### Technology Stack Expertise Needed
+- React Native / Capacitor development
+- TypeScript and modern JavaScript
+- Mobile UI/UX best practices
+- API integration and error handling
+- App store deployment processes
+
+---
+
+**Last Updated**: August 26, 2024
+**Project Status**: Mobile feature gap analysis complete, implementation roadmap defined
+**Next Milestone**: Sprint 1 - Authentication system implementation
+**Priority**: Complete mobile feature parity within 8-12 weeks

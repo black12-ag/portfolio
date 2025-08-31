@@ -1,0 +1,93 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Dark mode accessibility improvements */
+.dark .text-muted-foreground { color: rgba(229, 231, 235, 0.7); }
+.dark input::placeholder, .dark textarea::placeholder { color: rgba(229, 231, 235, 0.5); }
+.dark .placeholder-muted::placeholder { color: rgba(229, 231, 235, 0.5); }
+.dark .border-border { border-color: rgba(255,255,255,0.15); }
+.dark .bg-muted { background-color: rgba(255,255,255,0.05); }
+.dark .text-card-foreground { color: rgba(243, 244, 246, 1); }
+.dark .text-card-foreground\/80 { color: rgba(243, 244, 246, 0.8); }
+.dark .shadow-inset { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
+
+/* Fix hardcoded colors for dark mode */
+.dark .text-gray-400 { color: rgba(156, 163, 175, 1); }
+.dark .text-gray-500 { color: rgba(107, 114, 128, 1); }
+.dark .text-gray-600 { color: rgba(75, 85, 99, 1); }
+.dark .text-gray-700 { color: rgba(55, 65, 81, 1); }
+.dark .text-gray-800 { color: rgba(31, 41, 55, 1); }
+.dark .text-gray-900 { color: rgba(17, 24, 39, 1); }
+
+.dark .bg-gray-50 { background-color: rgba(17, 24, 39, 1); }
+.dark .bg-gray-100 { background-color: rgba(31, 41, 55, 1); }
+.dark .bg-gray-200 { background-color: rgba(55, 65, 81, 1); }
+.dark .bg-gray-700 { background-color: rgba(55, 65, 81, 1); }
+.dark .bg-gray-800 { background-color: rgba(31, 41, 55, 1); }
+.dark .bg-gray-900 { background-color: rgba(17, 24, 39, 1); }
+
+.dark .border-gray-200 { border-color: rgba(55, 65, 81, 1); }
+.dark .border-gray-300 { border-color: rgba(75, 85, 99, 1); }
+.dark .border-gray-600 { border-color: rgba(75, 85, 99, 1); }
+.dark .border-gray-700 { border-color: rgba(55, 65, 81, 1); }
+
+.dark .hover\:bg-gray-50:hover { background-color: rgba(31, 41, 55, 1); }
+.dark .hover\:bg-gray-100:hover { background-color: rgba(55, 65, 81, 1); }
+.dark .hover\:bg-gray-700:hover { background-color: rgba(31, 41, 55, 1); }
+.dark .hover\:bg-gray-800:hover { background-color: rgba(17, 24, 39, 1); }
+
+/* Ensure text visibility in dark mode */
+.dark .text-slate-800 { color: rgba(226, 232, 240, 1); }
+.dark .text-slate-900 { color: rgba(248, 250, 252, 1); }
+.dark .text-slate-600 { color: rgba(148, 163, 184, 1); }
+.dark .text-slate-500 { color: rgba(100, 116, 139, 1); }
+.dark .text-slate-400 { color: rgba(148, 163, 184, 1); }
+
+/* Dark mode scrollbar */
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #4a5568;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #2d3748;
+}

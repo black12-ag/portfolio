@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Freelance Developer Portfolio</title>
+    <meta name="description" content="Professional freelance developer specializing in modern web applications, mobile development, and full-stack solutions. Available for hire." />
+    <meta name="author" content="Freelance Developer" />
+    <meta name="keywords" content="freelance developer, web development, mobile apps, React, TypeScript, full-stack developer, portfolio" />
+
+    <meta property="og:title" content="Freelance Developer Portfolio" />
+    <meta property="og:description" content="Professional freelance developer specializing in modern web and mobile applications. View my work and get in touch." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="#" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Freelance Developer Portfolio" />
+    <meta name="twitter:description" content="Professional freelance developer specializing in modern web and mobile applications." />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <!-- Single entry point - React initialization handled in main.tsx -->
+  <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration for Offline Support (Prod only) -->
+    <script type="module">
+      // In development: proactively unregister any existing service workers to avoid stale caches
+      if (import.meta.env.DEV && 'serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations()
+          .then(regs => {
+            if (import.meta.env.VITE_VERBOSE_LOGS === 'true') console.debug('🔧 Dev Mode: Unregistering', regs.length, 'service workers');
+            return Promise.all(regs.map(r => r.unregister()));
+          })
+          .then(() => {
+            if (import.meta.env.VITE_VERBOSE_LOGS === 'true') console.debug('✅ Dev Mode: All service workers unregistered');
+            // Clear all caches in development
+            return caches.keys();
+          })
+          .then(cacheNames => {
+            return Promise.all(cacheNames.map(cacheName => caches.delete(cacheName)));
+          })
+          .then(() => {
+            if (import.meta.env.VITE_VERBOSE_LOGS === 'true') console.debug('✅ Dev Mode: All caches cleared');
+          })
+          .catch((error) => {
+            if (import.meta.env.VITE_VERBOSE_LOGS === 'true') console.warn('⚠️ Dev Mode: Error cleaning up service workers/caches:', error);
+          });
+      }
+
+      // In production: register the service worker for offline support
+      if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+              if (import.meta.env.VITE_VERBOSE_LOGS === 'true') console.debug('SW registered with scope: ', registration.scope);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                if (!newWorker) return;
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // Show update available notification
+                    if (window.confirm('New version available! Reload to update?')) {
+                      window.location.reload();
+                    }
+                  }
+                });
+              });
+            })
+            .catch(function(error) {
+              if (import.meta.env.VITE_VERBOSE_LOGS === 'true') console.warn('SW registration failed: ', error);
+            });
+        });
+      }
+      
+      // Handle offline/online status
+      function updateOnlineStatus() {
+        const statusElement = document.getElementById('connection-status');
+        if (navigator.onLine) {
+          if (statusElement) statusElement.style.display = 'none';
+        } else {
+          if (!statusElement) {
+            const status = document.createElement('div');
+            status.id = 'connection-status';
+            status.innerHTML = '⚡ Offline Mode - Limited functionality available';
+            status.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#f39c12;color:white;text-align:center;padding:8px;z-index:9999;font-size:14px';
+            document.body.appendChild(status);
+          } else {
+            statusElement.style.display = 'block';
+          }
+        }
+      }
+      
+      window.addEventListener('online', updateOnlineStatus);
+      window.addEventListener('offline', updateOnlineStatus);
+      updateOnlineStatus();
+    </script>
+  </body>
+</html>

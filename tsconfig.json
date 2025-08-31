@@ -1,0 +1,26 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    // Align with tsconfig.app.json strict settings
+    "strict": true,
+    "noImplicitAny": false,              // Keep disabled initially, will enable after fixing types
+    "noUnusedParameters": false,         // Keep disabled for now
+    "noUnusedLocals": false,             // Keep disabled for now
+    "skipLibCheck": true,
+    "allowJs": true,
+    "strictNullChecks": true,            // Enable null checks
+    "strictFunctionTypes": true,         // Enable strict function types
+    "noImplicitThis": true,              // Enable strict this checking
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "exactOptionalPropertyTypes": false  // Keep disabled for now
+  }
+}

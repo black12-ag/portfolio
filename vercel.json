@@ -1,0 +1,135 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build:prod",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "regions": ["iad1"],
+  "git": {
+    "deploymentEnabled": true
+  },
+  "env": {
+    "NODE_VERSION": "18",
+    "NODE_ENV": "production",
+    "VITE_APP_ENV": "production"
+  },
+  "functions": {
+    "api/liteapi.js": {
+      "maxDuration": 30
+    },
+    "api/liteapi-proxy.js": {
+      "maxDuration": 30
+    },
+    "api/health.js": {
+      "maxDuration": 10
+    },
+    "api/public-webhook.js": {
+      "maxDuration": 30
+    },
+    "api/webhook.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/liteapi/health",
+      "destination": "/api/health"
+    },
+    {
+      "source": "/api/liteapi/hotels/search",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/hotels/(.*)",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/bookings/(.*)",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/reviews",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/places",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/destinations",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/analytics",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/webhook",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/liteapi/(.*)",
+      "destination": "/api/liteapi"
+    },
+    {
+      "source": "/api/public-webhook",
+      "destination": "/api/public-webhook"
+    },
+    {
+      "source": "/api/webhook",
+      "destination": "/api/webhook"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-API-Key, X-METAH-Webhook"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}
