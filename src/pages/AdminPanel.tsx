@@ -394,7 +394,7 @@ export default function AdminPanel() {
 
                 {/* Video Upload */}
                 <div>
-                  <Label htmlFor="video">Video Upload (< 50MB)</Label>
+                  <Label htmlFor="video">Video Upload (Max 50MB)</Label>
                   <Input
                     id="video"
                     type="file"
