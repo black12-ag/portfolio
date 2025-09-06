@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Sun, Moon, Github, Linkedin, Mail, Code, User, FileText, Cog } from 'lucide-react';
+import { Menu, Sun, Moon, Github, Linkedin, Mail, Code, User, FileText, Cog, MessageSquare, Phone } from 'lucide-react';
+import { FaTelegram, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -24,9 +25,10 @@ export default function Navbar({ className }: NavbarProps) {
   ];
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/munir-ayub', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com/in/munir-ayub', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:munir.ayub@example.com', label: 'Email' },
+    { icon: Github, href: 'https://github.com/black12-ag', label: 'GitHub' },
+    { icon: FaWhatsapp, href: 'https://wa.me/251907806267', label: 'WhatsApp', isComponent: true },
+    { icon: FaTelegram, href: 'https://t.me/muay011', label: 'Telegram', isComponent: true },
+    { icon: FaXTwitter, href: 'https://x.com/muay01111', label: 'X', isComponent: true },
   ];
 
   const isActiveRoute = (href: string) => {
@@ -94,8 +96,13 @@ export default function Navbar({ className }: NavbarProps) {
                     className="h-9 w-9 p-0 text-foreground dark:text-gray-200 hover:text-primary hover:bg-primary/10"
                     onClick={() => window.open(social.href, '_blank')}
                     aria-label={social.label}
+                    title={social.label}
                   >
-                    <Icon className="h-4 w-4" />
+                    {social.isComponent ? (
+                      <Icon className="h-4 w-4" />
+                    ) : (
+                      <Icon className="h-4 w-4" />
+                    )}
                   </Button>
                 );
               })}
@@ -194,8 +201,13 @@ onClick={() => window.open(`${import.meta.env.BASE_URL}resume.pdf`, '_blank')}
                               setIsOpen(false);
                             }}
                             aria-label={social.label}
+                            title={social.label}
                           >
-                            <Icon className="h-4 w-4" />
+                            {social.isComponent ? (
+                              <Icon className="h-4 w-4" />
+                            ) : (
+                              <Icon className="h-4 w-4" />
+                            )}
                           </Button>
                         );
                       })}

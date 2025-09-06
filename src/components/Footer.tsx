@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Github, Linkedin, Mail, Twitter, Heart, Code, ExternalLink, Settings } from 'lucide-react';
+import { Github, Linkedin, Mail, MessageSquare, Phone, Heart, Code, ExternalLink, Settings } from 'lucide-react';
+import { FaTelegram, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
@@ -27,9 +28,10 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { icon: Github, href: 'https://github.com/munir-ayub', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://linkedin.com/in/munir-ayub', label: 'LinkedIn' },
-    { icon: Twitter, href: 'https://twitter.com/munir-ayub', label: 'Twitter' },
+    { icon: Github, href: 'https://github.com/black12-ag', label: 'GitHub' },
+    { icon: FaWhatsapp, href: 'https://wa.me/251907806267', label: 'WhatsApp', isComponent: true },
+    { icon: FaTelegram, href: 'https://t.me/muay011', label: 'Telegram', isComponent: true },
+    { icon: FaXTwitter, href: 'https://x.com/muay01111', label: 'X (Twitter)', isComponent: true },
     { icon: Mail, href: 'mailto:munir.ayub@example.com', label: 'Email' },
   ];
 
@@ -129,8 +131,16 @@ export default function Footer() {
                 <h3 className="text-xl font-semibold mb-6 text-foreground dark:text-white">Let's Connect</h3>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3 text-card-foreground/80 dark:text-gray-300">
-                    <Mail className="h-5 w-5 text-primary" />
-                    <span>munir.ayub@example.com</span>
+                    <Phone className="h-5 w-5 text-primary" />
+                    <a href="https://wa.me/251907806267" target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                      +251 907 806 267 (WhatsApp)
+                    </a>
+                  </div>
+                  <div className="flex items-center space-x-3 text-card-foreground/80 dark:text-gray-300">
+                    <MessageSquare className="h-5 w-5 text-primary" />
+                    <a href="https://t.me/muay011" target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                      @muay011 (Telegram)
+                    </a>
                   </div>
                   <div className="flex items-center space-x-3 text-card-foreground/80 dark:text-gray-300">
                     <Code className="h-5 w-5 text-primary" />
@@ -153,8 +163,13 @@ export default function Footer() {
                         className="h-10 w-10 p-0 border-border dark:border-gray-700 text-foreground dark:text-gray-200 hover:text-primary hover:border-primary hover:bg-primary/10"
                         onClick={() => window.open(social.href, '_blank')}
                         aria-label={social.label}
+                        title={social.label}
                       >
-                        <Icon className="h-4 w-4" />
+                        {social.isComponent ? (
+                          <Icon className="h-4 w-4" />
+                        ) : (
+                          <Icon className="h-4 w-4" />
+                        )}
                       </Button>
                     );
                   })}

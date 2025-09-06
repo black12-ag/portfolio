@@ -220,28 +220,26 @@ export default function AdminPanel() {
     setIsCreating(false);
   };
 
-  // Handle video file upload (convert to base64 for localStorage)
+  // Handle video file upload - for large files, prompt for URL instead
   const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 50 * 1024 * 1024) { // 50MB limit for localStorage
+      // For very large files, recommend using external hosting
+      if (file.size > 10 * 1024 * 1024) { // 10MB warning
         toast({
-          title: 'File Too Large',
-          description: 'Please use a video URL or YouTube link for large videos.',
-          variant: 'destructive'
+          title: 'Large Video File',
+          description: 'For better performance, consider uploading to YouTube or another video host and using the URL instead.',
         });
-        return;
       }
       
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, videoUrl: reader.result as string }));
-        toast({
-          title: 'Video Uploaded',
-          description: 'Video has been processed successfully.',
-        });
-      };
-      reader.readAsDataURL(file);
+      // Create object URL for video preview (doesn't store in localStorage)
+      const videoUrl = URL.createObjectURL(file);
+      setFormData(prev => ({ ...prev, videoUrl: videoUrl }));
+      
+      toast({
+        title: 'Video Ready',
+        description: 'Video loaded. For permanent storage, upload to a video hosting service.',
+      });
     }
   };
 
@@ -394,13 +392,16 @@ export default function AdminPanel() {
 
                 {/* Video Upload */}
                 <div>
-                  <Label htmlFor="video">Video Upload (Max 50MB)</Label>
+                  <Label htmlFor="video">Video Upload (Any Size - Use URL for best results)</Label>
                   <Input
                     id="video"
                     type="file"
                     accept="video/*"
                     onChange={handleVideoUpload}
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    For large videos, upload to YouTube/Vimeo and use the URL field
+                  </p>
                 </div>
 
                 {/* Video URL */}
