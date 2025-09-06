@@ -211,10 +211,32 @@ export default function Portfolio() {
   const [allProjects, setAllProjects] = useState<Project[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
+  // Load projects from localStorage (managed by admin)
+  const loadProjects = () => {
+    const storedProjects = localStorage.getItem('portfolio_projects');
+    if (storedProjects) {
+      const projects = JSON.parse(storedProjects);
+      setAllProjects(projects);
+      setFeaturedProjects(projects.filter((p: any) => p.featured));
+    } else {
+      // Use sample projects as fallback
+      setFeaturedProjects(sampleProjects.filter(p => p.featured));
+      setAllProjects(sampleProjects);
+    }
+  };
+
   useEffect(() => {
-    // In a real app, you'd fetch this from an API
-    setFeaturedProjects(sampleProjects.filter(p => p.featured));
-    setAllProjects(sampleProjects);
+    loadProjects();
+
+    // Listen for project updates from admin panel
+    const handleProjectsUpdate = () => {
+      loadProjects();
+    };
+
+    window.addEventListener('projectsUpdated', handleProjectsUpdate);
+    return () => {
+      window.removeEventListener('projectsUpdated', handleProjectsUpdate);
+    };
   }, []);
 
   const filteredProjects = selectedCategory === 'all' 

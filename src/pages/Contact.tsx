@@ -56,17 +56,17 @@ export default function Contact() {
     },
     {
       icon: Phone,
-      label: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567',
-      description: 'Call me during business hours'
+      label: 'WhatsApp',
+      value: '+251 907 806 267',
+      href: 'https://wa.me/251907806267',
+      description: 'Chat with me on WhatsApp'
     },
     {
-      icon: MapPin,
-      label: 'Location',
-      value: 'San Francisco, CA',
-      href: 'https://maps.google.com/?q=San+Francisco,CA',
-      description: 'Available for local meetings'
+      icon: MessageSquare,
+      label: 'Telegram',
+      value: '@muay011',
+      href: 'https://t.me/muay011',
+      description: 'Message me on Telegram'
     },
     {
       icon: Clock,
@@ -81,8 +81,8 @@ export default function Contact() {
     { 
       icon: Github, 
       label: 'GitHub', 
-      href: 'https://github.com/munir-ayub',
-      username: '@munir-ayub',
+      href: 'https://github.com/black12-ag',
+      username: '@black12-ag',
       description: 'Check out my code'
     },
     { 
@@ -94,9 +94,9 @@ export default function Contact() {
     },
     { 
       icon: Twitter, 
-      label: 'Twitter', 
-      href: 'https://twitter.com/munir-ayub',
-      username: '@munir-ayub',
+      label: 'Twitter/X', 
+      href: 'https://x.com/muay01111',
+      username: '@muay01111',
       description: 'Follow for updates'
     }
   ];

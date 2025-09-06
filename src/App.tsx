@@ -22,6 +22,7 @@ const NotFound = React.lazy(() => import('./pages/NotFound'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = React.lazy(() => import('./pages/TermsOfService'));
 const AnimationDemo = React.lazy(() => import('./mobile/pages/AnimationDemo'));
+const AdminPanel = React.lazy(() => import('./pages/AdminPanel'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -74,6 +75,7 @@ const App = () => {
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/animation-demo" element={<AnimationDemo />} />
+                    <Route path="/admin" element={<AdminPanel />} />
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="*" element={<NotFound />} />
