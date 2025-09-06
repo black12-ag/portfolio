@@ -281,7 +281,7 @@ export default function Home() {
       {/* Thank You Arc Effect */}
       <TextArcEffect 
         text=" THANK YOU • FOR VISITING • MUNIR AYUB •"
-        logoUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&crop=face"
+        logoUrl="/images/profile-photo.jpg"
         logoAlt="Munir Ayub"
       />
 

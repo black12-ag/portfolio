@@ -13,7 +13,7 @@ interface CentralLogoProps {
 }
 
 const CentralLogo: React.FC<CentralLogoProps> = ({ 
-  imageUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&crop=face",
+  imageUrl = "/images/profile-photo.jpg",
   alt = "Munir Ayub"
 }) => (
   <img
@@ -23,7 +23,7 @@ const CentralLogo: React.FC<CentralLogoProps> = ({
     onError={(e) => { 
       const target = e.target as HTMLImageElement;
       target.onerror = null; 
-      target.src = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&crop=face';
+      target.src = '/images/profile-photo.jpg';
     }}
   />
 );
