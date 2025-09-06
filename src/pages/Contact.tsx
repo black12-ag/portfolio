@@ -22,8 +22,11 @@ import {
   Zap,
   Heart,
   Coffee,
-  Calendar
+  Calendar,
+  QrCode,
+  ExternalLink
 } from 'lucide-react';
+import { FaTelegram, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 
 interface ContactForm {
   name: string;
@@ -48,25 +51,28 @@ export default function Contact() {
 
   const contactInfo = [
     {
+      icon: FaWhatsapp,
+      label: 'WhatsApp Business',
+      value: '+251 907 806 267',
+      href: 'https://wa.me/message/XAPGDNH6M4HGB1',
+      description: 'Quick chat via WhatsApp Business',
+      isComponent: true,
+      primary: true
+    },
+    {
+      icon: FaTelegram,
+      label: 'Telegram',
+      value: '@muay011',
+      href: 'https://t.me/muay011',
+      description: 'Message me on Telegram',
+      isComponent: true
+    },
+    {
       icon: Mail,
       label: 'Email',
       value: 'munir.ayub@example.com',
       href: 'mailto:munir.ayub@example.com',
       description: 'Send me an email anytime'
-    },
-    {
-      icon: Phone,
-      label: 'WhatsApp',
-      value: '+251 907 806 267',
-      href: 'https://wa.me/251907806267',
-      description: 'Chat with me on WhatsApp'
-    },
-    {
-      icon: MessageSquare,
-      label: 'Telegram',
-      value: '@muay011',
-      href: 'https://t.me/muay011',
-      description: 'Message me on Telegram'
     },
     {
       icon: Clock,
@@ -360,29 +366,83 @@ export default function Contact() {
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {contactInfo.map((info, index) => (
-                    <div key={index} className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                      <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                        <info.icon className="w-5 h-5 text-blue-600" />
+                  {contactInfo.map((info, index) => {
+                    const Icon = info.icon;
+                    return (
+                      <div key={index} className={`flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${info.primary ? 'border-2 border-green-500' : ''}`}>
+                        <div className={`p-2 ${info.primary ? 'bg-green-100 dark:bg-green-900' : 'bg-blue-100 dark:bg-blue-900'} rounded-lg`}>
+                          {info.isComponent ? (
+                            <Icon className={`w-5 h-5 ${info.primary ? 'text-green-600' : 'text-blue-600'}`} />
+                          ) : (
+                            <Icon className={`w-5 h-5 ${info.primary ? 'text-green-600' : 'text-blue-600'}`} />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900 dark:text-white">{info.label}</p>
+                          {info.href ? (
+                            <a 
+                              href={info.href}
+                              className={`${info.primary ? 'text-green-600 hover:text-green-700' : 'text-blue-600 hover:text-blue-700'} transition-colors font-medium`}
+                              target={info.href.startsWith('http') ? '_blank' : undefined}
+                              rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                            >
+                              {info.value}
+                            </a>
+                          ) : (
+                            <span className="text-gray-700 dark:text-gray-300">{info.value}</span>
+                          )}
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{info.description}</p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <p className="font-medium text-gray-900 dark:text-white">{info.label}</p>
-                        {info.href ? (
-                          <a 
-                            href={info.href}
-                            className="text-blue-600 hover:text-blue-700 transition-colors"
-                            target={info.href.startsWith('http') ? '_blank' : undefined}
-                            rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                          >
-                            {info.value}
-                          </a>
-                        ) : (
-                          <span className="text-gray-700 dark:text-gray-300">{info.value}</span>
-                        )}
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{info.description}</p>
-                      </div>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+
+              {/* WhatsApp QR Code */}
+              <Card className="border border-gray-200 dark:border-gray-700 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
+                <CardHeader>
+                  <CardTitle className="text-xl text-gray-900 dark:text-white flex items-center gap-2">
+                    <QrCode className="w-5 h-5" />
+                    Quick Connect via WhatsApp
+                  </CardTitle>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Scan the QR code to start chatting instantly!
+                  </p>
+                </CardHeader>
+                <CardContent className="flex flex-col items-center">
+                  <div className="bg-white p-4 rounded-xl shadow-lg">
+                    <img 
+                      src="/images/whatsapp-qr.png" 
+                      alt="WhatsApp QR Code" 
+                      className="w-48 h-48 object-contain"
+                      onError={(e) => {
+                        // If QR image doesn't exist, show placeholder
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const placeholder = document.getElementById('qr-placeholder');
+                        if (placeholder) placeholder.style.display = 'flex';
+                      }}
+                    />
+                    <div 
+                      id="qr-placeholder" 
+                      className="w-48 h-48 hidden flex-col items-center justify-center bg-gray-100 rounded-lg"
+                      style={{ display: 'none' }}
+                    >
+                      <QrCode className="w-16 h-16 text-gray-400 mb-2" />
+                      <p className="text-sm text-gray-500 text-center">QR Code<br/>Coming Soon</p>
                     </div>
-                  ))}
+                  </div>
+                  <Button
+                    className="mt-4 bg-green-600 hover:bg-green-700 text-white"
+                    onClick={() => window.open('https://wa.me/message/XAPGDNH6M4HGB1', '_blank')}
+                  >
+                    <FaWhatsapp className="w-5 h-5 mr-2" />
+                    Open WhatsApp Business
+                  </Button>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                    Or click the button to open WhatsApp directly
+                  </p>
                 </CardContent>
               </Card>
 

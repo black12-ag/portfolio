@@ -125,7 +125,24 @@ export default function Navbar({ className }: NavbarProps) {
             <Button
               size="sm"
               className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
-onClick={() => window.open(`${import.meta.env.BASE_URL}resume.pdf`, '_blank')}
+              onClick={() => {
+                const storedCV = localStorage.getItem('portfolio_cv');
+                if (storedCV) {
+                  if (storedCV.startsWith('data:')) {
+                    // Create download link for base64 CV
+                    const link = document.createElement('a');
+                    link.href = storedCV;
+                    link.download = 'Munir_Ayub_CV.pdf';
+                    link.click();
+                  } else {
+                    // Open external CV URL
+                    window.open(storedCV, '_blank');
+                  }
+                } else {
+                  // Fallback to default CV
+                  window.open(`${import.meta.env.BASE_URL}resume.pdf`, '_blank');
+                }
+              }}
             >
               <FileText className="w-4 h-4 mr-2" />
               Download CV

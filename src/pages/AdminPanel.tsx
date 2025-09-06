@@ -22,7 +22,9 @@ import {
   Code,
   Eye,
   EyeOff,
-  LogOut
+  LogOut,
+  FileText,
+  Download
 } from 'lucide-react';
 
 interface Project {
@@ -44,6 +46,7 @@ interface Project {
 const ADMIN_PASSWORD = '2580';
 const STORAGE_KEY = 'portfolio_projects';
 const AUTH_KEY = 'admin_authenticated';
+const CV_KEY = 'portfolio_cv';
 
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -55,6 +58,7 @@ export default function AdminPanel() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [cvUrl, setCvUrl] = useState<string>('');
   
   // Form state for new/edit project
   const [formData, setFormData] = useState<Partial<Project>>({
@@ -78,6 +82,7 @@ export default function AdminPanel() {
     if (isAuth) {
       setIsAuthenticated(true);
       loadProjects();
+      loadCV();
     }
   }, []);
 
@@ -86,6 +91,14 @@ export default function AdminPanel() {
     const storedProjects = localStorage.getItem(STORAGE_KEY);
     if (storedProjects) {
       setProjects(JSON.parse(storedProjects));
+    }
+  };
+
+  // Load CV URL from localStorage
+  const loadCV = () => {
+    const storedCV = localStorage.getItem(CV_KEY);
+    if (storedCV) {
+      setCvUrl(storedCV);
     }
   };
 
@@ -125,6 +138,48 @@ export default function AdminPanel() {
     setIsAuthenticated(false);
     localStorage.removeItem(AUTH_KEY);
     navigate('/');
+  };
+
+  // Handle CV upload
+  const handleCVUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        toast({
+          title: 'Invalid File',
+          description: 'Please upload a PDF file.',
+          variant: 'destructive'
+        });
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        localStorage.setItem(CV_KEY, dataUrl);
+        setCvUrl(dataUrl);
+        
+        // Update the public CV file
+        window.dispatchEvent(new CustomEvent('cvUpdated', { detail: dataUrl }));
+        
+        toast({
+          title: 'CV Updated',
+          description: 'Your CV has been updated successfully.',
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Handle CV URL update
+  const handleCVUrlUpdate = (url: string) => {
+    localStorage.setItem(CV_KEY, url);
+    setCvUrl(url);
+    window.dispatchEvent(new CustomEvent('cvUpdated', { detail: url }));
+    toast({
+      title: 'CV URL Updated',
+      description: 'Your CV URL has been updated successfully.',
+    });
   };
 
   // Handle project creation/update
@@ -330,6 +385,108 @@ export default function AdminPanel() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
+        {/* CV Management Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              CV/Resume Management
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Upload CV */}
+              <div>
+                <Label htmlFor="cv-upload">Upload New CV (PDF)</Label>
+                <Input
+                  id="cv-upload"
+                  type="file"
+                  accept=".pdf"
+                  onChange={handleCVUpload}
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Upload your CV as a PDF file
+                </p>
+              </div>
+              
+              {/* CV URL */}
+              <div>
+                <Label htmlFor="cv-url">Or Use External CV URL</Label>
+                <div className="flex gap-2 mt-2">
+                  <Input
+                    id="cv-url"
+                    type="url"
+                    placeholder="https://example.com/your-cv.pdf"
+                    defaultValue={cvUrl && !cvUrl.startsWith('data:') ? cvUrl : ''}
+                    onBlur={(e) => {
+                      if (e.target.value) handleCVUrlUpdate(e.target.value);
+                    }}
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      const input = document.getElementById('cv-url') as HTMLInputElement;
+                      if (input?.value) handleCVUrlUpdate(input.value);
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Current CV Status */}
+            {cvUrl && (
+              <div className="mt-6 p-4 bg-muted rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium text-sm">Current CV Status</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {cvUrl.startsWith('data:') ? 'CV uploaded to portfolio' : 'Using external CV URL'}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        if (cvUrl.startsWith('data:')) {
+                          // Create a download link for base64 CV
+                          const link = document.createElement('a');
+                          link.href = cvUrl;
+                          link.download = 'cv.pdf';
+                          link.click();
+                        } else {
+                          window.open(cvUrl, '_blank');
+                        }
+                      }}
+                    >
+                      <Download className="w-4 h-4 mr-1" />
+                      View CV
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => {
+                        localStorage.removeItem(CV_KEY);
+                        setCvUrl('');
+                        window.dispatchEvent(new CustomEvent('cvUpdated', { detail: '' }));
+                        toast({
+                          title: 'CV Removed',
+                          description: 'Your CV has been removed.',
+                        });
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Create/Edit Form */}
         {isCreating ? (
           <Card className="mb-8">
