@@ -1,0 +1,13 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#0088cc"/>
+  <rect x="50" y="50" width="300" height="200" rx="20" fill="white"/>
+  <circle cx="200" cy="100" r="20" fill="#0088cc"/>
+  <text x="200" y="130" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="18" font-weight="bold">MunirChat</text>
+  <text x="200" y="150" text-anchor="middle" fill="#666" font-family="Arial, sans-serif" font-size="14">AI Assistant Bot</text>
+  <rect x="70" y="180" width="80" height="30" rx="15" fill="#0088cc"/>
+  <text x="110" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">Telegram</text>
+  <rect x="160" y="180" width="80" height="30" rx="15" fill="#306998"/>
+  <text x="200" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">Python</text>
+  <rect x="250" y="180" width="80" height="30" rx="15" fill="#4285F4"/>
+  <text x="290" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">Gemini AI</text>
+</svg>

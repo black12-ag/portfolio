@@ -13,6 +13,7 @@ import {
   Eye,
   Heart
 } from 'lucide-react';
+import TelegramIntegration from './TelegramIntegration';
 
 export interface Project {
   id: string;
@@ -35,6 +36,31 @@ export interface Project {
   };
   keyFeatures?: string[];
   status: 'completed' | 'in-progress' | 'coming-soon';
+  telegramAccess?: {
+    botUsername: string;
+    startCommand: string;
+    demoPrompts: string[];
+    liveDemoAvailable: boolean;
+    requiresAuthentication: boolean;
+    responseTime: string;
+    availablePlugins: string[];
+  };
+  downloadOptions?: {
+    // Android specific
+    googlePlay?: string;
+    directApk?: string;
+    // iOS specific  
+    appStore?: string;
+    testFlight?: string;
+    // Common
+    qrCode: string;
+    minRequirements: string;
+    size: string;
+    latestVersion: string;
+    telegramBot: string;
+    telegramCommand: string;
+    platform?: 'iOS' | 'Android';
+  };
 }
 
 interface ProjectCardProps {
@@ -261,6 +287,17 @@ export default function ProjectCard({ project, className = '', showFullDetails =
           </div>
         )}
       </CardContent>
+
+      {/* Telegram Integration */}
+      {showFullDetails && (
+        <div className="px-6">
+          <TelegramIntegration 
+            projectId={project.id}
+            telegramAccess={project.telegramAccess}
+            downloadOptions={project.downloadOptions}
+          />
+        </div>
+      )}
 
       <CardFooter className="px-6 pb-6 pt-0">
         <div className="flex gap-2 w-full">

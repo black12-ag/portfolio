@@ -1,0 +1,13 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#6366f1"/>
+  <rect x="50" y="50" width="300" height="200" rx="20" fill="white"/>
+  <circle cx="200" cy="100" r="20" fill="#6366f1"/>
+  <text x="200" y="130" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="18" font-weight="bold">Web Dashboard</text>
+  <text x="200" y="150" text-anchor="middle" fill="#666" font-family="Arial, sans-serif" font-size="14">Admin Panel</text>
+  <rect x="80" y="180" width="60" height="30" rx="15" fill="#61DAFB"/>
+  <text x="110" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">React</text>
+  <rect x="160" y="180" width="80" height="30" rx="15" fill="#3178C6"/>
+  <text x="200" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">TypeScript</text>
+  <rect x="260" y="180" width="60" height="30" rx="15" fill="#06B6D4"/>
+  <text x="290" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">Tailwind</text>
+</svg>

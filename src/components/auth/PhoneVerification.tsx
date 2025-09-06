@@ -78,7 +78,7 @@ export const PhoneVerification: React.FC<PhoneVerificationProps> = ({
   // Handle phone number change
   const handlePhoneNumberChange = (value: string) => {
     // Allow only digits, spaces, dashes, parentheses, and plus
-    const cleaned = value.replace(/[^\d\s\-\(\)\+]/g, '');
+    const cleaned = value.replace(/[^\d\s\-()\+]/g, '');
     setPhoneNumber(cleaned);
     setError(null);
   };

@@ -816,30 +816,12 @@ const InteractiveMapInternal: React.FC<InteractiveMapProps> = ({
 export const InteractiveMap: React.FC<InteractiveMapProps> = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const isMobilePlatform = Capacitor.isNativePlatform();
 
-  // Use mobile fallback on Capacitor to avoid maps bundle issues
-  if (Capacitor.isNativePlatform()) {
-    return (
-      <MobileMapFallback
-        title="Interactive Property Map"
-        description="Property locations and details"
-        coordinates={props.center || [9.0, 38.75]}
-        properties={props.properties.map(p => ({
-          id: p.id,
-          name: p.title,
-          address: p.location,
-          coordinates: p.coordinates
-        }))}
-        onLocationSelect={(coords) => props.onPropertySelect?.(props.properties.find(p => 
-          p.coordinates && p.coordinates[0] === coords[0] && p.coordinates[1] === coords[1]
-        ))}
-        className={props.className}
-      />
-    );
-  }
-
-  // Load Leaflet modules on web
+  // Load Leaflet modules on web - must be called before any conditional returns
   useEffect(() => {
+    if (isMobilePlatform) return; // Skip initialization for mobile platforms
+    
     let isMounted = true;
     
     const initializeMap = async () => {
@@ -862,7 +844,28 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = (props) => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [isMobilePlatform]);
+
+  // Use mobile fallback on Capacitor to avoid maps bundle issues
+  if (isMobilePlatform) {
+    return (
+      <MobileMapFallback
+        title="Interactive Property Map"
+        description="Property locations and details"
+        coordinates={props.center || [9.0, 38.75]}
+        properties={props.properties.map(p => ({
+          id: p.id,
+          name: p.title,
+          address: p.location,
+          coordinates: p.coordinates
+        }))}
+        onLocationSelect={(coords) => props.onPropertySelect?.(props.properties.find(p => 
+          p.coordinates && p.coordinates[0] === coords[0] && p.coordinates[1] === coords[1]
+        ))}
+        className={props.className}
+      />
+    );
+  }
 
   // Loading state
   if (isLoading) {

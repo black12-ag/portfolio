@@ -2,6 +2,8 @@
 @import './styles/performance.css';
 /* Import enterprise animations */
 @import './styles/enterprise-animations.css';
+/* Import mobile portfolio animations */
+@import './mobile/styles/animations.css';
 
 @tailwind base;
 @tailwind components;

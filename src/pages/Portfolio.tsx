@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import PortfolioHero from '@/components/portfolio/PortfolioHero';
 import ProjectCard, { Project } from '@/components/portfolio/ProjectCard';
 import VideoShowcase, { VideoProject } from '@/components/portfolio/VideoShowcase';
+import InteractivePortfolio from '@/components/portfolio/InteractivePortfolio';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -254,6 +255,9 @@ export default function Portfolio() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Portfolio Section */}
+      <InteractivePortfolio />
 
       {/* About Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">

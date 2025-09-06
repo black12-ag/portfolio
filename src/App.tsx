@@ -12,10 +12,16 @@ import { ErrorBoundary } from "react-error-boundary";
 import "./i18n";
 
 // Lazy load pages
+const Home = React.lazy(() => import('./pages/Home'));
 const Portfolio = React.lazy(() => import('./pages/Portfolio'));
+const Projects = React.lazy(() => import('./pages/Projects'));
+const Services = React.lazy(() => import('./pages/Services'));
+const About = React.lazy(() => import('./pages/About'));
+const Contact = React.lazy(() => import('./pages/Contact'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 const PrivacyPolicy = React.lazy(() => import('./pages/PrivacyPolicy'));
 const TermsOfService = React.lazy(() => import('./pages/TermsOfService'));
+const AnimationDemo = React.lazy(() => import('./mobile/pages/AnimationDemo'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -28,7 +34,7 @@ const LoadingFallback = () => (
 );
 
 // Error fallback component
-const ErrorFallback = ({ error, resetErrorBoundary }: any) => (
+const ErrorFallback = ({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) => (
   <div className="flex items-center justify-center min-h-screen bg-background">
     <div className="flex flex-col items-center space-y-4 max-w-md text-center">
       <div className="text-red-500 text-6xl">⚠️</div>
@@ -61,12 +67,13 @@ const App = () => {
               <ErrorBoundary FallbackComponent={ErrorFallback}>
                 <Suspense fallback={<LoadingFallback />}>
                   <Routes>
-                    <Route path="/" element={<Portfolio />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/portfolio" element={<Portfolio />} />
-                    <Route path="/projects" element={<Portfolio />} />
-                    <Route path="/about" element={<Portfolio />} />
-                    <Route path="/services" element={<Portfolio />} />
-                    <Route path="/contact" element={<Portfolio />} />
+                    <Route path="/projects" element={<Projects />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/animation-demo" element={<AnimationDemo />} />
                     <Route path="/privacy" element={<PrivacyPolicy />} />
                     <Route path="/terms" element={<TermsOfService />} />
                     <Route path="*" element={<NotFound />} />

@@ -1,0 +1,13 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#3DDC84"/>
+  <rect x="50" y="50" width="300" height="200" rx="20" fill="white"/>
+  <circle cx="200" cy="100" r="20" fill="#3DDC84"/>
+  <text x="200" y="130" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="18" font-weight="bold">MunirChat</text>
+  <text x="200" y="150" text-anchor="middle" fill="#666" font-family="Arial, sans-serif" font-size="14">Android App</text>
+  <rect x="70" y="180" width="70" height="30" rx="15" fill="#3DDC84"/>
+  <text x="105" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">Android</text>
+  <rect x="160" y="180" width="80" height="30" rx="15" fill="#7C4DFF"/>
+  <text x="200" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">Kotlin</text>
+  <rect x="260" y="180" width="70" height="30" rx="15" fill="#FF5722"/>
+  <text x="295" y="199" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12">Material</text>
+</svg>

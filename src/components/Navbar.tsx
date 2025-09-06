@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Sun, Moon, Github, Linkedin, Mail, Code, User, FileText } from 'lucide-react';
+import { Menu, Sun, Moon, Github, Linkedin, Mail, Code, User, FileText, Cog } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -17,7 +17,8 @@ export default function Navbar({ className }: NavbarProps) {
 
   const navItems = [
     { name: 'Home', href: '/', icon: User },
-    { name: 'Portfolio', href: '/portfolio', icon: Code },
+    { name: 'Projects', href: '/projects', icon: Code },
+    { name: 'Services', href: '/services', icon: Cog },
     { name: 'About', href: '/about', icon: User },
     { name: 'Contact', href: '/contact', icon: Mail },
   ];

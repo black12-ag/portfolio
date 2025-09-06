@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import PortfolioHero from '@/components/portfolio/PortfolioHero';
+import PortfolioGlareCards from '@/components/portfolio/PortfolioGlareCards';
+import PortfolioVideoShowcase from '@/components/portfolio/PortfolioVideoShowcase';
 import ProjectCard, { Project } from '@/components/portfolio/ProjectCard';
+import { TextArcEffect } from '@/components/ui/text-arc-effect';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -157,30 +160,8 @@ export default function Home() {
       {/* Hero Section */}
       <PortfolioHero />
 
-      {/* Services Overview */}
-      <section className="py-20 bg-white dark:bg-gray-950">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">What I Do</h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              I specialize in creating comprehensive digital solutions that drive business growth.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                <CardContent className="p-6 text-center">
-                  <div className={`inline-flex p-4 rounded-full ${service.color} text-white mb-4`}>
-                    <service.icon className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">{service.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300">{service.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Interactive Skills Cards */}
+      <PortfolioGlareCards />
 
       {/* Featured Projects */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">
@@ -204,6 +185,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Project Video Demos */}
+      <PortfolioVideoShowcase />
 
       {/* Why Choose Me */}
       <section className="py-20 bg-white dark:bg-gray-950">
@@ -293,6 +277,13 @@ export default function Home() {
           </Button>
         </div>
       </section>
+
+      {/* Thank You Arc Effect */}
+      <TextArcEffect 
+        text=" THANK YOU • FOR VISITING • MUNIR AYUB •"
+        logoUrl="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&fit=crop&crop=face"
+        logoAlt="Munir Ayub"
+      />
 
       <Footer />
     </div>

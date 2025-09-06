@@ -20,7 +20,7 @@ import {
   Minimize2,
   Maximize2,
   Settings,
-  Signal,
+  Radio,
   Clock,
   User,
   Camera,
@@ -269,7 +269,7 @@ export const CallInterface: React.FC<CallInterfaceProps> = ({
             {/* Network Quality */}
             {networkQuality && (
               <Badge variant="secondary" className="bg-black/50 text-white">
-                <Signal className={`w-3 h-3 mr-1 ${getNetworkQualityColor(networkQuality.quality)}`} />
+                <Radio className={`w-3 h-3 mr-1 ${getNetworkQualityColor(networkQuality.quality)}`} />
                 {networkQuality.quality}
               </Badge>
             )}
@@ -368,7 +368,7 @@ export const CallInterface: React.FC<CallInterfaceProps> = ({
         {networkQuality && (
           <div className="mt-4 text-center">
             <div className="flex items-center justify-center gap-2 text-sm text-white/80">
-              <Signal className={`w-4 h-4 ${getNetworkQualityColor(networkQuality.quality)}`} />
+              <Radio className={`w-4 h-4 ${getNetworkQualityColor(networkQuality.quality)}`} />
               <span>
                 {networkQuality.rtt}ms • {networkQuality.quality} connection
               </span>

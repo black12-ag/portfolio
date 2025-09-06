@@ -102,20 +102,10 @@ export default defineConfig(({ mode }) => {
     modulePreload: { polyfill: true },
     cssCodeSplit: env.VITE_MOBILE_BUILD === 'true' ? false : true,
     rollupOptions: {
-      external: [],
       output: {
-        // CRITICAL FIX: No code splitting to prevent React forwardRef loading issues
         manualChunks: undefined,
         inlineDynamicImports: true,
-        format: 'es',
-        generatedCode: {
-          constBindings: true,
-          objectShorthand: true
-        }
-      },
-      treeshake: {
-        moduleSideEffects: false,
-        propertyReadSideEffects: false
+        format: 'es'
       }
     },
     chunkSizeWarningLimit: 10000, // Increased since we're bundling everything together
