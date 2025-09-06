@@ -48,9 +48,11 @@ export default function Navbar({ className }: NavbarProps) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
-              <span className="text-white font-bold text-lg">M</span>
-            </div>
+            <img 
+              src="/images/logo.jpeg" 
+              alt="Munir Ayub Logo" 
+              className="w-10 h-10 rounded-lg object-cover transition-transform group-hover:scale-110"
+            />
             <span className="text-xl font-bold text-foreground dark:text-white group-hover:text-primary transition-colors">
               Munir Ayub
             </span>
@@ -152,9 +154,11 @@ onClick={() => window.open(`${import.meta.env.BASE_URL}resume.pdf`, '_blank')}
                 <div className="flex flex-col space-y-6 mt-6">
                   {/* Mobile Logo */}
                   <div className="flex items-center space-x-3 p-4 bg-muted rounded-lg">
-                    <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">M</span>
-                    </div>
+                    <img 
+                      src="/images/logo.jpeg" 
+                      alt="Munir Ayub Logo" 
+                      className="w-12 h-12 rounded-lg object-cover"
+                    />
                     <div>
                       <p className="font-bold text-lg text-foreground">Munir Ayub</p>
                       <p className="text-sm text-muted-foreground">Full Stack Developer</p>

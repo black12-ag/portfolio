@@ -44,16 +44,30 @@ export default function Footer() {
             {/* About Section */}
             <div className="space-y-6">
               <div>
-                <div className="flex items-center space-x-2 mb-6">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">M</span>
-                  </div>
+                <div className="flex items-center space-x-3 mb-6">
+                  <img 
+                    src="/images/logo.jpeg" 
+                    alt="Munir Ayub Logo" 
+                    className="w-12 h-12 rounded-lg object-cover"
+                  />
                   <span className="text-2xl font-bold text-foreground dark:text-white">Munir Ayub</span>
                 </div>
                 <p className="text-card-foreground/80 dark:text-gray-300 text-lg leading-relaxed">
                   Full Stack Developer passionate about creating beautiful, functional web and mobile applications.
                   Let's build something amazing together.
                 </p>
+              </div>
+              
+              {/* Profile Photo with Animation */}
+              <div className="mt-6">
+                <div className="relative w-32 h-32 mx-auto lg:mx-0 group">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-pulse opacity-75 group-hover:opacity-100 transition-opacity"></div>
+                  <img 
+                    src="/images/profile-photo.jpg" 
+                    alt="Munir Ayub" 
+                    className="relative w-full h-full rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-xl transform transition-transform group-hover:scale-105"
+                  />
+                </div>
               </div>
 
               {/* Newsletter */}
