@@ -25,151 +25,106 @@ import {
   Target,
   Briefcase,
   Award,
-  TrendingUp
+  TrendingUp,
+  Bot,
+  Cpu,
+  Laptop,
+  Settings2,
+  Sparkles
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-// Main services data
+// Main services data - redesigned with cleaner structure
 const mainServices = [
   {
     id: 'web-apps',
-    icon: Globe,
-    title: 'Web Applications',
-    description: 'Modern, responsive web applications with complex business logic and real-time features.',
-    longDescription: 'I create sophisticated web applications using cutting-edge technologies like React, Next.js, and TypeScript. From simple landing pages to complex enterprise applications, I focus on performance, scalability, and user experience.',
-    technologies: ['React', 'Next.js', 'TypeScript', 'Vue.js', 'Tailwind CSS', 'Node.js'],
-    features: [
-      'Responsive design for all devices',
-      'Performance optimization',
-      'SEO and accessibility compliance',
-      'Modern UI/UX design',
-      'Real-time functionality',
-      'Progressive Web App (PWA) support'
-    ],
+    icon: '💻',
+    lucideIcon: Laptop,
+    title: 'Web Apps',
+    shortDescription: 'Modern responsive websites and web applications.',
+    description: 'Custom web applications built with React, Next.js, and modern technologies for optimal performance and user experience.',
+    technologies: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
     startingPrice: '$2,500',
     timeline: '4-8 weeks',
-    color: 'bg-blue-500',
+    color: 'from-blue-500 to-blue-600',
+    borderColor: 'border-blue-200',
+    bgColor: 'bg-blue-50',
     popular: true
   },
   {
     id: 'mobile-apps',
-    icon: Smartphone,
-    title: 'Mobile Development',
-    description: 'Cross-platform and native mobile applications for iOS and Android platforms.',
-    longDescription: 'I develop high-quality mobile applications using React Native and Flutter, ensuring your app works seamlessly across both iOS and Android platforms while maintaining native performance.',
-    technologies: ['React Native', 'Flutter', 'Expo', 'iOS', 'Android', 'Firebase'],
-    features: [
-      'Cross-platform compatibility',
-      'Native performance',
-      'App Store deployment',
-      'Push notifications',
-      'Offline functionality',
-      'Device integration (camera, GPS, etc.)'
-    ],
+    icon: '📱',
+    lucideIcon: Smartphone,
+    title: 'Mobile Apps',
+    shortDescription: 'Cross-platform iOS and Android applications.',
+    description: 'Native-quality mobile apps using React Native and Flutter that work seamlessly across all platforms.',
+    technologies: ['React Native', 'Flutter', 'Expo', 'Firebase'],
     startingPrice: '$5,000',
     timeline: '6-12 weeks',
-    color: 'bg-green-500',
-    popular: false
-  },
-  {
-    id: 'backend-apis',
-    icon: Database,
-    title: 'Backend & APIs',
-    description: 'Robust server architecture, RESTful APIs, database design, and cloud deployment.',
-    longDescription: 'I build scalable backend systems and APIs that power your applications. From database design to cloud deployment, I ensure your backend is secure, performant, and maintainable.',
-    technologies: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB', 'AWS', 'Docker'],
-    features: [
-      'RESTful API development',
-      'Database design and optimization',
-      'Authentication and authorization',
-      'Cloud deployment and scaling',
-      'API documentation',
-      'Performance monitoring'
-    ],
-    startingPrice: '$3,000',
-    timeline: '3-6 weeks',
-    color: 'bg-purple-500',
-    popular: true
-  },
-  {
-    id: 'fullstack',
-    icon: Code,
-    title: 'Full Stack Solutions',
-    description: 'Complete end-to-end solutions combining frontend, backend, and deployment.',
-    longDescription: 'I provide comprehensive full-stack development services, handling everything from initial concept to deployment and maintenance. Perfect for businesses needing complete digital solutions.',
-    technologies: ['React', 'Node.js', 'TypeScript', 'PostgreSQL', 'AWS', 'Docker'],
-    features: [
-      'Complete application development',
-      'Frontend and backend integration',
-      'Database design and management',
-      'Deployment and DevOps',
-      'Ongoing maintenance and support',
-      'Performance optimization'
-    ],
-    startingPrice: '$8,000',
-    timeline: '8-16 weeks',
-    color: 'bg-indigo-500',
-    popular: true
-  },
-  {
-    id: 'desktop-apps',
-    icon: Monitor,
-    title: 'Desktop Applications',
-    description: 'Cross-platform desktop applications using Electron and modern web technologies.',
-    longDescription: 'I create powerful desktop applications that work across Windows, macOS, and Linux using Electron and modern web technologies, bringing web development skills to desktop environments.',
-    technologies: ['Electron', 'React', 'TypeScript', 'Node.js', 'SQLite'],
-    features: [
-      'Cross-platform compatibility',
-      'Native OS integration',
-      'Offline functionality',
-      'File system access',
-      'System notifications',
-      'Auto-updates'
-    ],
-    startingPrice: '$4,000',
-    timeline: '6-10 weeks',
-    color: 'bg-orange-500',
+    color: 'from-blue-600 to-blue-700',
+    borderColor: 'border-blue-300',
+    bgColor: 'bg-blue-50',
     popular: false
   },
   {
     id: 'automation',
-    icon: Cog,
-    title: 'Process Automation',
-    description: 'Custom automation tools, scripts, and workflow optimization solutions.',
-    longDescription: 'I help businesses automate repetitive tasks and optimize workflows through custom scripts, tools, and integrations, saving time and reducing human error.',
-    technologies: ['Python', 'Node.js', 'Automation', 'APIs', 'Webhooks', 'CI/CD'],
-    features: [
-      'Workflow automation',
-      'Data processing and migration',
-      'API integrations',
-      'Scheduled tasks and jobs',
-      'Custom dashboards',
-      'Performance monitoring'
-    ],
+    icon: '⚡',
+    lucideIcon: Zap,
+    title: 'Automation',
+    shortDescription: 'Streamline workflows and automate repetitive tasks.',
+    description: 'Custom automation solutions to boost productivity and eliminate manual processes using modern tools and APIs.',
+    technologies: ['Python', 'Node.js', 'APIs', 'Webhooks'],
     startingPrice: '$1,500',
     timeline: '2-4 weeks',
-    color: 'bg-red-500',
+    color: 'from-purple-500 to-purple-600',
+    borderColor: 'border-purple-200',
+    bgColor: 'bg-purple-50',
+    popular: true
+  },
+  {
+    id: 'bots',
+    icon: '🤖',
+    lucideIcon: Bot,
+    title: 'Bots',
+    shortDescription: 'Intelligent chatbots and automated assistants.',
+    description: 'AI-powered bots for customer support, lead generation, and task automation across multiple platforms.',
+    technologies: ['OpenAI', 'Telegram API', 'Discord.js', 'NLP'],
+    startingPrice: '$2,000',
+    timeline: '3-6 weeks',
+    color: 'from-purple-600 to-purple-700',
+    borderColor: 'border-purple-300',
+    bgColor: 'bg-purple-50',
+    popular: true
+  },
+  {
+    id: 'backend-apis',
+    icon: '🔧',
+    lucideIcon: Settings2,
+    title: 'Backend & APIs',
+    shortDescription: 'Robust server infrastructure and API development.',
+    description: 'Scalable backend systems with secure APIs, database optimization, and cloud deployment solutions.',
+    technologies: ['Node.js', 'PostgreSQL', 'MongoDB', 'AWS'],
+    startingPrice: '$3,000',
+    timeline: '3-6 weeks',
+    color: 'from-slate-500 to-slate-600',
+    borderColor: 'border-slate-200',
+    bgColor: 'bg-slate-50',
     popular: false
   },
   {
-    id: 'ui-ux-design',
-    icon: Palette,
-    title: 'UI/UX Design',
-    description: 'User-centered design with modern interfaces and seamless user experiences.',
-    longDescription: 'I create beautiful, intuitive user interfaces and experiences that not only look great but also drive engagement and conversions. From wireframes to final designs.',
-    technologies: ['Figma', 'Adobe XD', 'Sketch', 'Prototyping', 'User Research'],
-    features: [
-      'User research and personas',
-      'Wireframing and prototyping',
-      'Visual design and branding',
-      'Usability testing',
-      'Design systems',
-      'Responsive design'
-    ],
-    startingPrice: '$2,000',
-    timeline: '3-6 weeks',
-    color: 'bg-pink-500',
-    popular: false
+    id: 'ai-tools',
+    icon: '✨',
+    lucideIcon: Sparkles,
+    title: 'AI Tools',
+    shortDescription: 'Custom AI solutions and intelligent applications.',
+    description: 'Leverage AI and machine learning to build smart tools that enhance productivity and user experience.',
+    technologies: ['OpenAI', 'TensorFlow', 'Python', 'LangChain'],
+    startingPrice: '$4,000',
+    timeline: '4-8 weeks',
+    color: 'from-blue-700 to-purple-600',
+    borderColor: 'border-blue-200',
+    bgColor: 'bg-blue-50',
+    popular: true
   }
 ];
 
@@ -246,7 +201,7 @@ export default function Services() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-12 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+      <section className="pt-24 pb-12 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-100 dark:from-gray-900 via-gray-850 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
@@ -280,101 +235,115 @@ export default function Services() {
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">Core Services</h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 text-center mb-12 max-w-2xl mx-auto">
-              I offer a comprehensive range of development services tailored to your business needs.
+              Comprehensive development services to bring your ideas to life
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {mainServices.map((service) => (
-                <Card 
-                  key={service.id} 
-                  className={`hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer ${
-                    service.popular ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
-                  }`}
-                  onClick={() => setSelectedService(selectedService === service.id ? null : service.id)}
-                >
-                  <CardHeader className="text-center pb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {mainServices.map((service) => {
+                const LucideIcon = service.lucideIcon;
+                return (
+                  <Card 
+                    key={service.id} 
+                    className={`group hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden ${
+                      service.popular 
+                        ? 'ring-2 ring-blue-400 ring-opacity-50 border-blue-200 dark:border-blue-700' 
+                        : `${service.borderColor} dark:border-gray-700 border`
+                    }`}
+                    onClick={() => setSelectedService(selectedService === service.id ? null : service.id)}
+                  >
                     {service.popular && (
-                      <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white">
+                      <div className="absolute top-0 right-0 bg-gradient-to-l from-blue-500 to-blue-600 text-white px-3 py-1 text-xs font-medium rounded-bl-lg">
                         Popular
-                      </Badge>
+                      </div>
                     )}
-                    <div className={`inline-flex p-4 rounded-full ${service.color} text-white mb-4`}>
-                      <service.icon className="w-8 h-8" />
-                    </div>
-                    <CardTitle className="text-xl text-gray-900 dark:text-white">{service.title}</CardTitle>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm">{service.description}</p>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    {selectedService === service.id ? (
-                      <>
-                        <p className="text-gray-700 dark:text-gray-300 text-sm">{service.longDescription}</p>
+                    
+                    <CardContent className="p-6">
+                      <div className="text-center mb-4">
+                        {/* Emoji Icon with Gradient Background */}
+                        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${service.color} text-white text-2xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                          {service.icon}
+                        </div>
                         
-                        <div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Key Features:</h4>
-                          <ul className="space-y-1">
-                            {service.features.map((feature, index) => (
-                              <li key={index} className="flex items-start gap-2 text-sm text-gray-700 dark:text-gray-300">
-                                <CheckCircle className="w-3 h-3 text-green-500 mt-0.5 flex-shrink-0" />
-                                {feature}
-                              </li>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                          {service.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                          {service.shortDescription}
+                        </p>
+                      </div>
+                      
+                      {selectedService === service.id ? (
+                        <div className="space-y-4 animate-in fade-in duration-300">
+                          <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                            {service.description}
+                          </p>
+                          
+                          <div className="flex flex-wrap gap-2">
+                            {service.technologies.map((tech, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs px-2 py-1">
+                                {tech}
+                              </Badge>
                             ))}
-                          </ul>
-                        </div>
-                        
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {service.technologies.map((tech, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {tech}
-                            </Badge>
-                          ))}
-                        </div>
-                        
-                        <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                          <div className="text-center">
-                            <div className="flex items-center gap-1 text-green-600 font-semibold">
-                              <DollarSign className="w-4 h-4" />
-                              {service.startingPrice}
-                            </div>
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Starting from</p>
                           </div>
-                          <div className="text-center">
-                            <div className="flex items-center gap-1 text-blue-600 font-semibold">
-                              <Clock className="w-4 h-4" />
-                              {service.timeline}
+                          
+                          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="text-center">
+                              <div className="text-lg font-bold text-green-600">
+                                {service.startingPrice}
+                              </div>
+                              <p className="text-xs text-gray-600 dark:text-gray-400">Starting from</p>
                             </div>
-                            <p className="text-xs text-gray-600 dark:text-gray-400">Timeline</p>
+                            <div className="text-center">
+                              <div className="text-lg font-bold text-blue-600">
+                                {service.timeline}
+                              </div>
+                              <p className="text-xs text-gray-600 dark:text-gray-400">Timeline</p>
+                            </div>
                           </div>
+                          
+                          <Button 
+                            className={`w-full bg-gradient-to-r ${service.color} text-white hover:shadow-lg transition-all duration-300`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate('/contact');
+                            }}
+                          >
+                            Get Started
+                          </Button>
                         </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {service.technologies.slice(0, 3).map((tech, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs">
-                              {tech}
-                            </Badge>
-                          ))}
-                          {service.technologies.length > 3 && (
-                            <Badge variant="secondary" className="text-xs">
-                              +{service.technologies.length - 3} more
-                            </Badge>
-                          )}
+                      ) : (
+                        <div className="space-y-4">
+                          <div className="flex flex-wrap gap-2 justify-center">
+                            {service.technologies.slice(0, 3).map((tech, index) => (
+                              <Badge key={index} variant="outline" className="text-xs">
+                                {tech}
+                              </Badge>
+                            ))}
+                            {service.technologies.length > 3 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{service.technologies.length - 3}
+                              </Badge>
+                            )}
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+                            <span className="font-medium">{service.startingPrice}</span>
+                            <span>{service.timeline}</span>
+                          </div>
+                          
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="w-full group-hover:bg-gray-50 dark:group-hover:bg-gray-800 transition-colors"
+                          >
+                            View Details <ArrowRight className="w-3 h-3 ml-2" />
+                          </Button>
                         </div>
-                        
-                        <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
-                          <span>From {service.startingPrice}</span>
-                          <span>{service.timeline}</span>
-                        </div>
-                        
-                        <Button variant="outline" size="sm" className="w-full">
-                          Learn More <ArrowRight className="w-3 h-3 ml-1" />
-                        </Button>
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                      )}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -474,17 +443,22 @@ export default function Services() {
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              {popularServices.map((service) => (
-                <Card key={service.id} className="border-2 border-blue-500 bg-blue-50 dark:bg-blue-900/20">
-                  <CardContent className="p-6 text-center">
-                    <service.icon className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{service.title}</h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{service.description}</p>
-                    <div className="text-2xl font-bold text-blue-600 mb-2">{service.startingPrice}</div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Starting from</p>
-                  </CardContent>
-                </Card>
-              ))}
+              {popularServices.map((service) => {
+                const LucideIcon = service.lucideIcon;
+                return (
+                  <Card key={service.id} className={`border-2 ${service.borderColor} ${service.bgColor} dark:bg-opacity-20 hover:shadow-lg transition-shadow`}>
+                    <CardContent className="p-6 text-center">
+                      <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${service.color} text-white text-xl mb-4`}>
+                        {service.icon}
+                      </div>
+                      <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">{service.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{service.shortDescription}</p>
+                      <div className="text-2xl font-bold text-green-600 mb-2">{service.startingPrice}</div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Starting from</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
             
             <p className="text-gray-600 dark:text-gray-300 mb-8">
@@ -503,7 +477,7 @@ export default function Services() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-slate-700 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Start Your Project?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">

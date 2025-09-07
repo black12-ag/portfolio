@@ -2,13 +2,37 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Github, Linkedin, Mail, MessageSquare, Phone, Heart, Code, ExternalLink, Settings } from 'lucide-react';
 import { FaTelegram, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const { toast } = useToast();
   const [email, setEmail] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState<string>('/images/profile-photo.jpg');
+
+  // Load profile photo from localStorage
+  useEffect(() => {
+    const loadProfilePhoto = () => {
+      const storedPhoto = localStorage.getItem('profile_photo');
+      if (storedPhoto) {
+        setProfilePhoto(storedPhoto);
+      }
+    };
+
+    loadProfilePhoto();
+
+    // Listen for profile photo updates
+    const handleProfilePhotoUpdate = (event: CustomEvent) => {
+      setProfilePhoto(event.detail);
+    };
+
+    window.addEventListener('profilePhotoUpdated', handleProfilePhotoUpdate as EventListener);
+
+    return () => {
+      window.removeEventListener('profilePhotoUpdated', handleProfilePhotoUpdate as EventListener);
+    };
+  }, []);
 
   const navItems = [
     { name: 'Home', href: '/' },
@@ -63,9 +87,13 @@ export default function Footer() {
                 <div className="relative w-32 h-32 mx-auto lg:mx-0 group">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full animate-pulse opacity-75 group-hover:opacity-100 transition-opacity"></div>
                   <img 
-                    src="/images/profile-photo.jpg" 
+                    src={profilePhoto} 
                     alt="Munir Ayub" 
                     className="relative w-full h-full rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-xl transform transition-transform group-hover:scale-105"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://ui-avatars.com/api/?name=Munir+Ayub&size=200&background=3b82f6&color=ffffff&format=svg';
+                    }}
                   />
                 </div>
               </div>

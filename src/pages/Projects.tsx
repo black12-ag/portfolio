@@ -412,72 +412,7 @@ export default function Projects() {
                   viewMode === 'grid' ? (
                     <ProjectCard key={project.id} project={project} />
                   ) : (
-                    <Card key={project.id} className="border border-gray-200 dark:border-gray-700">
-                      <CardContent className="p-6">
-                        <div className="flex flex-col md:flex-row gap-6">
-                          <div className="md:w-1/3">
-                            <img
-                              src={project.image}
-                              alt={project.title}
-                              className="w-full h-48 md:h-32 object-cover rounded-lg"
-                            />
-                          </div>
-                          <div className="md:w-2/3 space-y-3">
-                            <div className="flex items-start justify-between">
-                              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{project.title}</h3>
-                              <Badge 
-                                variant={project.status === 'completed' ? 'default' : 'secondary'}
-                                className="ml-2"
-                              >
-                                {project.status}
-                              </Badge>
-                            </div>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">{project.description}</p>
-                            <div className="flex flex-wrap gap-1">
-                              {project.technologies.map((tech, index) => (
-                                <Badge key={index} variant="secondary" className="text-xs">
-                                  {tech}
-                                </Badge>
-                              ))}
-                            </div>
-                            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                              <div className="flex items-center gap-1">
-                                <Calendar className="w-3 h-3" />
-                                <span>{project.completedDate}</span>
-                              </div>
-                              {project.client && (
-                                <div className="flex items-center gap-1">
-                                  <User className="w-3 h-3" />
-                                  <span>{project.client}</span>
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {project.liveUrl && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => window.open(project.liveUrl, '_blank')}
-                                >
-                                  <ExternalLink className="w-3 h-3 mr-1" />
-                                  Live Demo
-                                </Button>
-                              )}
-                              {project.githubUrl && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => window.open(project.githubUrl, '_blank')}
-                                >
-                                  <Github className="w-3 h-3 mr-1" />
-                                  Code
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <ProjectCard key={project.id} project={project} showFullDetails={true} />
                   )
                 ))}
               </div>

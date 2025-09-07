@@ -9,6 +9,62 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enhanced platform icon animations */
+@keyframes glow-pulse {
+  0% { box-shadow: 0 0 0 0 currentColor; }
+  70% { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes icon-bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+  60% { transform: translateY(-3px); }
+}
+
+.skill-badge-glow:hover {
+  animation: glow-pulse 1.5s infinite;
+}
+
+.float-animation {
+  animation: float-gentle 3s ease-in-out infinite;
+}
+
+.social-icon-bounce:hover {
+  animation: icon-bounce 0.6s;
+}
+
+/* Platform-specific brand colors */
+.whatsapp-hover:hover {
+  background-color: #25D366 !important;
+  box-shadow: 0 8px 25px -8px rgba(37, 211, 102, 0.3) !important;
+}
+
+.telegram-hover:hover {
+  background-color: #0088CC !important;
+  box-shadow: 0 8px 25px -8px rgba(0, 136, 204, 0.3) !important;
+}
+
+.github-hover:hover {
+  background-color: #333333 !important;
+  box-shadow: 0 8px 25px -8px rgba(51, 51, 51, 0.3) !important;
+}
+
+.linkedin-hover:hover {
+  background-color: #0077B5 !important;
+  box-shadow: 0 8px 25px -8px rgba(0, 119, 181, 0.3) !important;
+}
+
+.email-hover:hover {
+  background-color: #EA4335 !important;
+  box-shadow: 0 8px 25px -8px rgba(234, 67, 53, 0.3) !important;
+}
+
 /* Modern scrollbar styles */
 .scrollbar-thin {
   scrollbar-width: thin;

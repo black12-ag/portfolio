@@ -176,7 +176,6 @@ export default defineConfig(({ mode }) => {
       'react/jsx-runtime',
       'react/jsx-dev-runtime',
       'react-router-dom',
-      '@tanstack/react-query',
       'lucide-react',
       '@radix-ui/react-slot',
       '@radix-ui/react-tooltip',

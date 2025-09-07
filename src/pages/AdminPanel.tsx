@@ -43,10 +43,25 @@ interface Project {
   status: 'completed' | 'in-progress' | 'coming-soon';
 }
 
+interface HeroImage {
+  id: string;
+  url: string;
+  alt: string;
+  name: string;
+}
+
+interface HeroSettings {
+  slideshowInterval: number; // in milliseconds
+  enableSlideshow: boolean;
+}
+
 const ADMIN_PASSWORD = '2580';
 const STORAGE_KEY = 'portfolio_projects';
 const AUTH_KEY = 'admin_authenticated';
 const CV_KEY = 'portfolio_cv';
+const HERO_IMAGES_KEY = 'hero_images';
+const HERO_SETTINGS_KEY = 'hero_settings';
+const PROFILE_PHOTO_KEY = 'profile_photo';
 
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -60,13 +75,24 @@ export default function AdminPanel() {
   const [isCreating, setIsCreating] = useState(false);
   const [cvUrl, setCvUrl] = useState<string>('');
   
+  // Hero images state
+  const [heroImages, setHeroImages] = useState<HeroImage[]>([]);
+  const [heroSettings, setHeroSettings] = useState<HeroSettings>({
+    slideshowInterval: 5000,
+    enableSlideshow: true
+  });
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [newImageName, setNewImageName] = useState('');
+  const [profilePhoto, setProfilePhoto] = useState<string>('/images/profile-photo.jpg');
+  const [videoUploadProgress, setVideoUploadProgress] = useState<number>(0);
+  const [isVideoUploading, setIsVideoUploading] = useState<boolean>(false);
+  
   // Form state for new/edit project
   const [formData, setFormData] = useState<Partial<Project>>({
     title: '',
     description: '',
     image: '',
     videoUrl: '',
-    youtubeUrl: '',
     technologies: [],
     category: 'web',
     githubUrl: '',
@@ -83,6 +109,9 @@ export default function AdminPanel() {
       setIsAuthenticated(true);
       loadProjects();
       loadCV();
+      loadHeroImages();
+      loadHeroSettings();
+      loadProfilePhoto();
     }
   }, []);
 
@@ -100,6 +129,51 @@ export default function AdminPanel() {
     if (storedCV) {
       setCvUrl(storedCV);
     }
+  };
+
+  // Load hero images from localStorage
+  const loadHeroImages = () => {
+    const storedImages = localStorage.getItem(HERO_IMAGES_KEY);
+    if (storedImages) {
+      setHeroImages(JSON.parse(storedImages));
+    }
+  };
+
+  // Load hero settings from localStorage
+  const loadHeroSettings = () => {
+    const storedSettings = localStorage.getItem(HERO_SETTINGS_KEY);
+    if (storedSettings) {
+      setHeroSettings(JSON.parse(storedSettings));
+    }
+  };
+
+  // Load profile photo from localStorage
+  const loadProfilePhoto = () => {
+    const storedPhoto = localStorage.getItem(PROFILE_PHOTO_KEY);
+    if (storedPhoto) {
+      setProfilePhoto(storedPhoto);
+    }
+  };
+
+  // Save hero images to localStorage
+  const saveHeroImages = (images: HeroImage[]) => {
+    localStorage.setItem(HERO_IMAGES_KEY, JSON.stringify(images));
+    setHeroImages(images);
+    window.dispatchEvent(new CustomEvent('heroImagesUpdated', { detail: images }));
+  };
+
+  // Save hero settings to localStorage
+  const saveHeroSettings = (settings: HeroSettings) => {
+    localStorage.setItem(HERO_SETTINGS_KEY, JSON.stringify(settings));
+    setHeroSettings(settings);
+    window.dispatchEvent(new CustomEvent('heroSettingsUpdated', { detail: settings }));
+  };
+
+  // Save profile photo to localStorage
+  const saveProfilePhoto = (photoUrl: string) => {
+    localStorage.setItem(PROFILE_PHOTO_KEY, photoUrl);
+    setProfilePhoto(photoUrl);
+    window.dispatchEvent(new CustomEvent('profilePhotoUpdated', { detail: photoUrl }));
   };
 
   // Save projects to localStorage
@@ -120,6 +194,9 @@ export default function AdminPanel() {
       setIsAuthenticated(true);
       localStorage.setItem(AUTH_KEY, 'true');
       loadProjects();
+      loadHeroImages();
+      loadHeroSettings();
+      loadProfilePhoto();
       toast({
         title: 'Welcome Admin!',
         description: 'You have successfully logged in.',
@@ -138,6 +215,115 @@ export default function AdminPanel() {
     setIsAuthenticated(false);
     localStorage.removeItem(AUTH_KEY);
     navigate('/');
+  };
+
+  // Handle adding new hero image
+  const handleAddHeroImage = () => {
+    if (!newImageUrl || !newImageName) {
+      toast({
+        title: 'Missing Information',
+        description: 'Please provide both image URL and name.',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    const newImage: HeroImage = {
+      id: Date.now().toString(),
+      url: newImageUrl,
+      alt: newImageName,
+      name: newImageName
+    };
+
+    const updatedImages = [...heroImages, newImage];
+    saveHeroImages(updatedImages);
+    setNewImageUrl('');
+    setNewImageName('');
+    
+    toast({
+      title: 'Hero Image Added',
+      description: `${newImageName} has been added to the hero slideshow.`,
+    });
+  };
+
+  // Handle deleting hero image
+  const handleDeleteHeroImage = (id: string) => {
+    const image = heroImages.find(img => img.id === id);
+    if (confirm(`Are you sure you want to delete "${image?.name}"?`)) {
+      const updatedImages = heroImages.filter(img => img.id !== id);
+      saveHeroImages(updatedImages);
+      
+      toast({
+        title: 'Hero Image Deleted',
+        description: `${image?.name} has been removed.`,
+      });
+    }
+  };
+
+  // Handle updating hero settings
+  const handleUpdateHeroSettings = (newSettings: Partial<HeroSettings>) => {
+    const updatedSettings = { ...heroSettings, ...newSettings };
+    saveHeroSettings(updatedSettings);
+    
+    toast({
+      title: 'Hero Settings Updated',
+      description: 'Slideshow settings have been saved.',
+    });
+  };
+
+  // Handle profile photo upload
+  const handleProfilePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: 'Invalid File',
+          description: 'Please upload an image file.',
+          variant: 'destructive'
+        });
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        saveProfilePhoto(dataUrl);
+        
+        toast({
+          title: 'Profile Photo Updated',
+          description: 'Your profile photo has been updated successfully.',
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Handle hero image file upload
+  const handleHeroImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: 'Invalid File',
+          description: 'Please upload an image file.',
+          variant: 'destructive'
+        });
+        return;
+      }
+      
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        setNewImageUrl(dataUrl);
+        setNewImageName(file.name.split('.')[0]);
+        
+        toast({
+          title: 'Image Loaded',
+          description: 'Image is ready to be added to the hero section.',
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Handle CV upload
@@ -262,7 +448,6 @@ export default function AdminPanel() {
       description: '',
       image: '',
       videoUrl: '',
-      youtubeUrl: '',
       technologies: [],
       category: 'web',
       githubUrl: '',
@@ -275,26 +460,105 @@ export default function AdminPanel() {
     setIsCreating(false);
   };
 
-  // Handle video file upload - for large files, prompt for URL instead
+  // Handle video file upload - convert to base64 for storage
   const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // For very large files, recommend using external hosting
-      if (file.size > 10 * 1024 * 1024) { // 10MB warning
+      // Check file type
+      if (!file.type.startsWith('video/')) {
+        toast({
+          title: 'Invalid File',
+          description: 'Please upload a video file.',
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      // Size warnings and limits
+      if (file.size > 600 * 1024 * 1024) { // 600MB hard limit
+        toast({
+          title: 'File Too Large',
+          description: 'Video files must be under 600MB. For better performance, consider using YouTube or Vimeo for very large files.',
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      if (file.size > 100 * 1024 * 1024) { // 100MB warning for very large files
+        toast({
+          title: 'Very Large Video File',
+          description: 'This file is quite large and may take several minutes to upload and process. Please be patient.',
+        });
+      } else if (file.size > 50 * 1024 * 1024) { // 50MB warning
         toast({
           title: 'Large Video File',
-          description: 'For better performance, consider uploading to YouTube or another video host and using the URL instead.',
+          description: 'This may take a moment to upload. Consider using YouTube or Vimeo for better performance.',
         });
       }
       
-      // Create object URL for video preview (doesn't store in localStorage)
-      const videoUrl = URL.createObjectURL(file);
-      setFormData(prev => ({ ...prev, videoUrl: videoUrl }));
+      // Show loading state
+      setIsVideoUploading(true);
+      setVideoUploadProgress(0);
       
-      toast({
-        title: 'Video Ready',
-        description: 'Video loaded. For permanent storage, upload to a video hosting service.',
-      });
+      const isLargeFile = file.size > 50 * 1024 * 1024; // 50MB+
+      
+      if (isLargeFile) {
+        toast({
+          title: 'Uploading Large Video...',
+          description: 'This may take several minutes. Please keep this tab open and avoid refreshing.',
+        });
+      } else {
+        toast({
+          title: 'Uploading Video...',
+          description: 'Please wait while your video is being processed.',
+        });
+      }
+      
+      // Convert to base64 for storage
+      const reader = new FileReader();
+      
+      // Simulate progress for large files (FileReader doesn't provide real progress)
+      let progressInterval: NodeJS.Timeout | null = null;
+      if (isLargeFile) {
+        let progress = 0;
+        progressInterval = setInterval(() => {
+          progress += Math.random() * 10;
+          if (progress > 90) progress = 90; // Don't reach 100% until actually done
+          setVideoUploadProgress(progress);
+        }, 1000);
+      }
+      
+      reader.onloadend = () => {
+        if (progressInterval) clearInterval(progressInterval);
+        setVideoUploadProgress(100);
+        
+        const dataUrl = reader.result as string;
+        setFormData(prev => ({ ...prev, videoUrl: dataUrl }));
+        
+        setTimeout(() => {
+          setIsVideoUploading(false);
+          setVideoUploadProgress(0);
+        }, 1000);
+        
+        toast({
+          title: 'Video Uploaded Successfully!',
+          description: `${file.name} (${(file.size / 1024 / 1024).toFixed(1)}MB) has been uploaded and is ready to use.`,
+        });
+      };
+      
+      reader.onerror = () => {
+        if (progressInterval) clearInterval(progressInterval);
+        setIsVideoUploading(false);
+        setVideoUploadProgress(0);
+        
+        toast({
+          title: 'Upload Failed',
+          description: 'There was an error uploading your video. Please try again.',
+          variant: 'destructive'
+        });
+      };
+      
+      reader.readAsDataURL(file);
     }
   };
 
@@ -385,6 +649,116 @@ export default function AdminPanel() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
+        {/* Profile Photo Management Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Image className="w-5 h-5" />
+              Profile Photo Management
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Update your profile photo that appears in the hero section
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Current Profile Photo */}
+              <div>
+                <Label>Current Profile Photo</Label>
+                <div className="mt-2 flex items-center space-x-4">
+                  <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-100">
+                    <img 
+                      src={profilePhoto}
+                      alt="Current Profile"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = 'https://ui-avatars.com/api/?name=Profile&size=200&background=3b82f6&color=ffffff&format=svg';
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Profile Photo</p>
+                    <p className="text-xs text-muted-foreground">
+                      This image appears in your hero section
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Upload New Photo */}
+              <div>
+                <Label htmlFor="profile-photo-upload">Upload New Profile Photo</Label>
+                <Input
+                  id="profile-photo-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfilePhotoUpload}
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Upload a square image for best results (JPG, PNG, WebP)
+                </p>
+                
+                {/* URL Input */}
+                <div className="mt-4">
+                  <Label htmlFor="profile-photo-url">Or Use Image URL</Label>
+                  <div className="flex gap-2 mt-2">
+                    <Input
+                      id="profile-photo-url"
+                      type="url"
+                      placeholder="https://example.com/your-photo.jpg"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && e.currentTarget.value) {
+                          saveProfilePhoto(e.currentTarget.value);
+                          e.currentTarget.value = '';
+                          toast({
+                            title: 'Profile Photo Updated',
+                            description: 'Your profile photo URL has been saved.',
+                          });
+                        }
+                      }}
+                    />
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const input = document.getElementById('profile-photo-url') as HTMLInputElement;
+                        if (input?.value) {
+                          saveProfilePhoto(input.value);
+                          input.value = '';
+                          toast({
+                            title: 'Profile Photo Updated',
+                            description: 'Your profile photo URL has been saved.',
+                          });
+                        }
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Reset to Default */}
+            <div className="mt-6 pt-4 border-t">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  const defaultPhoto = '/images/profile-photo.jpg';
+                  saveProfilePhoto(defaultPhoto);
+                  toast({
+                    title: 'Profile Photo Reset',
+                    description: 'Profile photo has been reset to default.',
+                  });
+                }}
+              >
+                Reset to Default Photo
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* CV Management Section */}
         <Card className="mb-8">
           <CardHeader>
@@ -487,6 +861,155 @@ export default function AdminPanel() {
           </CardContent>
         </Card>
 
+        {/* Hero Images Management Section */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Image className="w-5 h-5" />
+              Hero Images Management
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Add multiple images for the hero section slideshow and control timing
+            </p>
+          </CardHeader>
+          <CardContent>
+            {/* Hero Settings */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <Label htmlFor="slideshow-interval">Slideshow Interval (seconds)</Label>
+                <Input
+                  id="slideshow-interval"
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={heroSettings.slideshowInterval / 1000}
+                  onChange={(e) => {
+                    const seconds = parseInt(e.target.value) || 5;
+                    handleUpdateHeroSettings({ slideshowInterval: seconds * 1000 });
+                  }}
+                  className="mt-2"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  How long each image shows (1-60 seconds)
+                </p>
+              </div>
+              
+              <div className="flex items-center space-x-2 mt-6">
+                <input
+                  type="checkbox"
+                  id="enable-slideshow"
+                  checked={heroSettings.enableSlideshow}
+                  onChange={(e) => handleUpdateHeroSettings({ enableSlideshow: e.target.checked })}
+                />
+                <Label htmlFor="enable-slideshow">Enable Automatic Slideshow</Label>
+              </div>
+            </div>
+            
+            {/* Add New Hero Image */}
+            <div className="border-t pt-6">
+              <h4 className="font-medium mb-4">Add New Hero Image</h4>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="hero-image-upload">Upload Image</Label>
+                  <Input
+                    id="hero-image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleHeroImageUpload}
+                    className="mt-2"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="hero-image-url">Or Image URL</Label>
+                  <Input
+                    id="hero-image-url"
+                    type="url"
+                    placeholder="https://example.com/image.jpg"
+                    value={newImageUrl && !newImageUrl.startsWith('data:') ? newImageUrl : ''}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    className="mt-2"
+                    disabled={newImageUrl.startsWith('data:')}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="hero-image-name">Image Name</Label>
+                  <Input
+                    id="hero-image-name"
+                    placeholder="Professional Photo"
+                    value={newImageName}
+                    onChange={(e) => setNewImageName(e.target.value)}
+                    className="mt-2"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex justify-end mt-4">
+                <Button onClick={handleAddHeroImage} disabled={!newImageUrl || !newImageName}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Hero Image
+                </Button>
+              </div>
+            </div>
+            
+            {/* Current Hero Images */}
+            {heroImages.length > 0 && (
+              <div className="border-t pt-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="font-medium">Current Hero Images ({heroImages.length})</h4>
+                  <Badge variant="secondary">
+                    Slideshow: {heroSettings.enableSlideshow ? `${heroSettings.slideshowInterval / 1000}s` : 'Off'}
+                  </Badge>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {heroImages.map((image, index) => (
+                    <Card key={image.id} className="overflow-hidden">
+                      <div className="h-32 overflow-hidden">
+                        <img 
+                          src={image.url} 
+                          alt={image.alt}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'https://via.placeholder.com/400x200?text=Image+Error';
+                          }}
+                        />
+                      </div>
+                      <CardContent className="p-3">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h5 className="font-medium text-sm">{image.name}</h5>
+                            <p className="text-xs text-muted-foreground">Image {index + 1}</p>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleDeleteHeroImage(image.id)}
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {heroImages.length === 0 && (
+              <div className="border-t pt-6 text-center py-8">
+                <Image className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <h4 className="font-medium mb-2">No Hero Images</h4>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Add images to create a slideshow for your hero section
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Create/Edit Form */}
         {isCreating ? (
           <Card className="mb-8">
@@ -547,41 +1070,102 @@ export default function AdminPanel() {
                   />
                 </div>
 
-                {/* Video Upload */}
-                <div>
-                  <Label htmlFor="video">Video Upload (Any Size - Use URL for best results)</Label>
-                  <Input
-                    id="video"
-                    type="file"
-                    accept="video/*"
-                    onChange={handleVideoUpload}
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">
-                    For large videos, upload to YouTube/Vimeo and use the URL field
+                {/* Video - Unified Input */}
+                <div className="md:col-span-2">
+                  <Label htmlFor="videoUrl">Project Video (Optional)</Label>
+                  
+                  {/* Smart Recommendations */}
+                  <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <h4 className="text-sm font-medium text-blue-800 mb-2">📹 Video Options:</h4>
+                    <div className="text-xs text-blue-700 space-y-1">
+                      <div>• <strong>YouTube URL</strong>: Paste any YouTube link (best performance) 🚀</div>
+                      <div>• <strong>Vimeo URL</strong>: Paste Vimeo link for professional look</div>
+                      <div>• <strong>Direct Upload</strong>: Upload video file under 50MB for small demos</div>
+                    </div>
+                  </div>
+                  
+                  {/* URL Input */}
+                  <div className="space-y-2">
+                    <Input
+                      id="videoUrl"
+                      value={formData.videoUrl?.startsWith('data:') ? '✅ Video file uploaded locally' : formData.videoUrl || ''}
+                      onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
+                      placeholder="https://youtube.com/watch?v=... or https://vimeo.com/..."
+                      disabled={formData.videoUrl?.startsWith('data:')}
+                      className={formData.videoUrl?.startsWith('data:') ? 'bg-green-50 text-green-800' : ''}
+                    />
+                    
+                    {/* File Upload Alternative */}
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 border-t border-gray-200"></div>
+                      <span className="text-xs text-gray-500 px-2">OR</span>
+                      <div className="flex-1 border-t border-gray-200"></div>
+                    </div>
+                    
+                    <Input
+                      type="file"
+                      accept="video/*"
+                      onChange={handleVideoUpload}
+                      disabled={isVideoUploading || Boolean(formData.videoUrl && !formData.videoUrl.startsWith('data:'))}
+                      className="file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                  </div>
+                  
+                  {/* Video Upload Progress */}
+                  {isVideoUploading && (
+                    <div className="mt-3 bg-blue-50 border border-blue-200 rounded p-3">
+                      <div className="flex items-center text-blue-800 mb-2">
+                        <Video className="w-4 h-4 mr-2 animate-pulse" />
+                        <span className="text-xs font-medium">Uploading video... {videoUploadProgress.toFixed(0)}%</span>
+                      </div>
+                      <div className="w-full bg-blue-200 rounded-full h-2">
+                        <div 
+                          className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                          style={{ width: `${videoUploadProgress}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Video Status */}
+                  {formData.videoUrl && (
+                    <div className="mt-2 p-2 bg-gray-50 border rounded text-xs">
+                      {formData.videoUrl.startsWith('data:') ? (
+                        <div className="flex items-center justify-between text-green-800">
+                          <span>✅ Local video uploaded successfully</span>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setFormData(prev => ({ ...prev, videoUrl: '' }))}
+                            className="h-6 px-2 text-red-600 hover:text-red-700"
+                          >
+                            <X className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      ) : formData.videoUrl.includes('youtube') || formData.videoUrl.includes('youtu.be') ? (
+                        <div className="flex items-center gap-2 text-red-700">
+                          <Youtube className="w-4 h-4" />
+                          <span>YouTube video linked - excellent for performance!</span>
+                        </div>
+                      ) : formData.videoUrl.includes('vimeo') ? (
+                        <div className="flex items-center gap-2 text-blue-700">
+                          <Video className="w-4 h-4" />
+                          <span>Vimeo video linked - great for professional content</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2 text-gray-700">
+                          <Video className="w-4 h-4" />
+                          <span>External video URL provided</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  
+                  <p className="text-xs text-muted-foreground mt-2">
+                    <strong>Recommendation:</strong> For best performance, upload large videos to YouTube (unlisted) and paste the URL here.
+                    Direct upload works great for small demo videos under 50MB.
                   </p>
-                </div>
-
-                {/* Video URL */}
-                <div>
-                  <Label htmlFor="videoUrl">Video URL (External)</Label>
-                  <Input
-                    id="videoUrl"
-                    value={formData.videoUrl?.startsWith('data:') ? 'Video uploaded' : formData.videoUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
-                    placeholder="https://example.com/video.mp4"
-                    disabled={formData.videoUrl?.startsWith('data:')}
-                  />
-                </div>
-
-                {/* YouTube URL */}
-                <div>
-                  <Label htmlFor="youtubeUrl">YouTube URL</Label>
-                  <Input
-                    id="youtubeUrl"
-                    value={formData.youtubeUrl}
-                    onChange={(e) => setFormData(prev => ({ ...prev, youtubeUrl: e.target.value }))}
-                    placeholder="https://youtube.com/watch?v=..."
-                  />
                 </div>
 
                 {/* Technologies */}

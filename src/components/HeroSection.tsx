@@ -110,11 +110,11 @@ export default function HeroSection({ imageUrls }: HeroSectionProps) {
               <div className="text-sm text-white/80 dark:text-gray-300">Districts</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white dark:text-gray-100">50K+</div>
+              <div className="text-2xl md:text-3xl font-bold text-white dark:text-gray-100">21K+</div>
               <div className="text-sm text-white/80 dark:text-gray-300">Happy Guests</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white dark:text-gray-100">24/7</div>
+              <div className="text-2xl md:text-3xl font-bold text-white dark:text-gray-100">15 hours</div>
               <div className="text-sm text-white/80 dark:text-gray-300">Support</div>
             </div>
           </div>

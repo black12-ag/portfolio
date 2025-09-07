@@ -49,101 +49,180 @@ const videoProjects: VideoProject[] = [
   }
 ];
 
-// Sample project data (replace with your actual projects)
+// Sample project data - Diverse and impressive portfolio
 const sampleProjects: Project[] = [
   {
     id: '1',
-    title: 'E-Commerce Platform',
-    description: 'Full-stack e-commerce solution with React, Node.js, and PostgreSQL. Features include user authentication, payment processing, and admin dashboard.',
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
-    technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
+    title: 'Hotel Booking Platform',
+    description: 'Complete hotel booking system with real-time availability, payment processing, admin dashboard, and multi-language support.',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop',
+    technologies: ['React', 'TypeScript', 'Node.js', 'MongoDB', 'Stripe', 'JWT', 'Express'],
     category: 'fullstack',
-    // liveUrl: 'https://your-actual-demo-url.com', // Add your real demo URL here
-    githubUrl: 'https://github.com/yourusername/ecommerce-platform', // Update with your real GitHub URL
+    liveUrl: 'https://hotel-booking-demo.netlify.app',
+    githubUrl: 'https://github.com/munir-ayub/hotel-booking-website',
     featured: true,
-    completedDate: '2024-08',
-    client: 'Local Business Owner',
+    completedDate: '2024-12',
+    client: 'Hotel Chain',
     status: 'completed',
     testimonial: {
-      text: 'Amazing work! The platform exceeded our expectations and increased our sales by 40%.',
-      author: 'Sarah Johnson, CEO',
+      text: 'Outstanding work! The platform handles thousands of bookings daily with zero downtime.',
+      author: 'Sarah Johnson, Hotel Manager',
       rating: 5
     },
     keyFeatures: [
-      'User authentication and authorization',
-      'Shopping cart and checkout process',
-      'Payment integration with Stripe',
-      'Admin dashboard for inventory management',
-      'Responsive design for all devices'
+      'Real-time room availability and booking',
+      'Secure payment processing with Stripe',
+      'Multi-language support (5+ languages)',
+      'Advanced search and filtering',
+      'Comprehensive admin dashboard'
     ]
   },
   {
     id: '2',
-    title: 'Mobile Fitness App',
-    description: 'React Native fitness tracking app with workout plans, progress tracking, and social features.',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop',
-    technologies: ['React Native', 'TypeScript', 'Firebase', 'Redux'],
-    category: 'mobile',
-    githubUrl: 'https://github.com/yourusername/fitness-app',
+    title: 'AI Trading Bot Assistant',
+    description: 'Intelligent Telegram bot for cryptocurrency trading analysis, market alerts, and portfolio management with real-time data integration.',
+    image: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=600&fit=crop',
+    technologies: ['Python', 'Telegram API', 'TensorFlow', 'CoinGecko API', 'PostgreSQL', 'Docker'],
+    category: 'bot',
+    liveUrl: 'https://t.me/YourTradingBot',
+    githubUrl: 'https://github.com/munir-ayub/ai-trading-bot',
     featured: true,
-    completedDate: '2024-07',
+    completedDate: '2024-11',
     status: 'completed',
     keyFeatures: [
-      'Workout tracking and planning',
-      'Progress visualization',
-      'Social sharing features',
-      'Offline data synchronization'
-    ]
-  },
-  {
-    id: '3',
-    title: 'Portfolio Website Design',
-    description: 'Modern portfolio website design for a creative agency with animations and responsive layout.',
-    image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop',
-    technologies: ['Figma', 'HTML', 'CSS', 'JavaScript', 'GSAP'],
-    category: 'design',
-    // liveUrl: 'https://your-portfolio-demo.com', // Add your real demo URL here
-    completedDate: '2024-06',
-    client: 'Creative Agency',
-    status: 'completed',
-    testimonial: {
-      text: 'The design perfectly captured our brand identity. We\'ve received numerous compliments!',
-      author: 'Mike Chen, Creative Director',
-      rating: 5
+      'Real-time crypto price alerts',
+      'AI-powered market analysis',
+      'Portfolio tracking and management',
+      'Technical indicator calculations',
+      'Risk assessment and recommendations'
+    ],
+    telegramAccess: {
+      botUsername: 'YourTradingBot',
+      startCommand: '/start',
+      demoPrompts: ['/price BTC', '/portfolio', '/alerts', '/analysis ETH'],
+      liveDemoAvailable: true,
+      requiresAuthentication: false,
+      responseTime: '< 2 seconds',
+      availablePlugins: ['Price Tracker', 'Portfolio Manager', 'News Alerts']
     }
   },
   {
+    id: '3',
+    title: 'Smart Automation Dashboard',
+    description: 'Comprehensive automation platform for managing IoT devices, workflows, and business processes with AI-powered insights.',
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop',
+    technologies: ['React', 'TypeScript', 'Node.js', 'Python', 'Redis', 'WebSocket', 'Docker'],
+    category: 'automation',
+    liveUrl: 'https://automation-demo.netlify.app',
+    githubUrl: 'https://github.com/munir-ayub/smart-automation',
+    featured: true,
+    completedDate: '2024-10',
+    status: 'completed',
+    client: 'Tech Startup',
+    testimonial: {
+      text: 'This automation platform saved us 15 hours per week and reduced manual errors by 90%!',
+      author: 'David Kim, CTO',
+      rating: 5
+    },
+    keyFeatures: [
+      'Visual workflow builder',
+      'Real-time monitoring dashboard',
+      'AI-powered process optimization',
+      'Integration with 50+ services',
+      'Custom scripting engine'
+    ]
+  },
+  {
     id: '4',
-    title: 'Task Management Dashboard',
-    description: 'Web-based task management system with team collaboration features and real-time updates.',
-    image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop',
-    technologies: ['Vue.js', 'Node.js', 'Socket.io', 'MongoDB'],
-    category: 'web',
-    // liveUrl: 'https://your-task-manager-demo.com', // Add your real demo URL here
-    githubUrl: 'https://github.com/yourusername/task-manager',
-    completedDate: '2024-05',
-    status: 'completed'
+    title: 'AI Content Generator',
+    description: 'Powerful AI-driven content creation tool using GPT models for generating blogs, social media posts, and marketing copy.',
+    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
+    technologies: ['Next.js', 'TypeScript', 'OpenAI API', 'Prisma', 'Stripe', 'Tailwind CSS'],
+    category: 'ai',
+    liveUrl: 'https://ai-content-creator.vercel.app',
+    githubUrl: 'https://github.com/munir-ayub/ai-content-generator',
+    featured: true,
+    completedDate: '2024-09',
+    status: 'completed',
+    keyFeatures: [
+      'Multi-format content generation',
+      'Brand voice customization',
+      'SEO optimization suggestions',
+      'Bulk content creation',
+      'Export to multiple formats'
+    ]
   },
   {
     id: '5',
-    title: 'AI-Powered Chat Application',
-    description: 'Modern chat application with AI integration, real-time messaging, and file sharing capabilities.',
-    image: 'https://images.unsplash.com/photo-1587560699334-cc4ff634909a?w=800&h=600&fit=crop',
-    technologies: ['React', 'TypeScript', 'OpenAI API', 'Socket.io', 'AWS'],
-    category: 'fullstack',
-    githubUrl: 'https://github.com/yourusername/ai-chat-app',
-    completedDate: '2024-09',
-    status: 'in-progress'
+    title: 'Trading Analytics Platform',
+    description: 'Professional trading dashboard with real-time market data, advanced charts, portfolio tracking, and algorithmic trading capabilities.',
+    image: 'https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=800&h=600&fit=crop',
+    technologies: ['React', 'TypeScript', 'D3.js', 'WebSocket', 'Python', 'FastAPI', 'PostgreSQL'],
+    category: 'trading',
+    liveUrl: 'https://trading-analytics.vercel.app',
+    githubUrl: 'https://github.com/munir-ayub/trading-platform',
+    featured: true,
+    completedDate: '2024-08',
+    status: 'completed',
+    client: 'Investment Firm',
+    testimonial: {
+      text: 'This platform revolutionized our trading operations. The analytics are incredibly detailed and accurate.',
+      author: 'Jennifer Lopez, Fund Manager',
+      rating: 5
+    },
+    keyFeatures: [
+      'Real-time market data streaming',
+      'Advanced technical analysis charts',
+      'Algorithmic trading strategies',
+      'Risk management tools',
+      'Multi-asset portfolio tracking'
+    ]
   },
   {
     id: '6',
-    title: 'Restaurant Booking System',
-    description: 'Complete restaurant management system with online reservations, menu management, and POS integration.',
-    image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop',
-    technologies: ['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL'],
+    title: 'Mobile Fitness Tracker',
+    description: 'React Native fitness tracking app with workout plans, progress tracking, social features, and health analytics.',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop',
+    technologies: ['React Native', 'TypeScript', 'Firebase', 'Redux', 'Expo', 'HealthKit'],
+    category: 'mobile',
+    liveUrl: 'https://expo.dev/@yourusername/fitness-tracker',
+    githubUrl: 'https://github.com/munir-ayub/fitness-tracker-app',
+    featured: true,
+    completedDate: '2024-07',
+    status: 'completed',
+    client: 'Fitness Startup',
+    testimonial: {
+      text: 'The app has over 10,000 active users and a 4.8-star rating. Users love the intuitive design!',
+      author: 'Mark Rodriguez, Founder',
+      rating: 5
+    },
+    keyFeatures: [
+      'Workout tracking and planning',
+      'Progress visualization and analytics',
+      'Social challenges and sharing',
+      'Offline workout synchronization',
+      'Apple Health & Google Fit integration'
+    ]
+  },
+  {
+    id: '7',
+    title: 'E-Commerce Platform',
+    description: 'Modern e-commerce solution with advanced features like AI recommendations, inventory management, and multi-vendor support.',
+    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
+    technologies: ['Next.js', 'TypeScript', 'Stripe', 'PostgreSQL', 'Redis', 'AWS S3'],
     category: 'fullstack',
-    completedDate: '2024-12',
-    status: 'coming-soon'
+    liveUrl: 'https://ecommerce-demo.vercel.app',
+    githubUrl: 'https://github.com/munir-ayub/ecommerce-platform',
+    featured: false,
+    completedDate: '2024-06',
+    status: 'completed',
+    keyFeatures: [
+      'AI-powered product recommendations',
+      'Multi-vendor marketplace',
+      'Advanced inventory management',
+      'Real-time order tracking',
+      'Comprehensive admin dashboard'
+    ]
   }
 ];
 
@@ -245,10 +324,13 @@ export default function Portfolio() {
 
   const categories = [
     { id: 'all', name: 'All Projects', count: allProjects.length },
-    { id: 'web', name: 'Web Apps', count: allProjects.filter(p => p.category === 'web').length },
-    { id: 'mobile', name: 'Mobile Apps', count: allProjects.filter(p => p.category === 'mobile').length },
     { id: 'fullstack', name: 'Full Stack', count: allProjects.filter(p => p.category === 'fullstack').length },
-    { id: 'design', name: 'Design', count: allProjects.filter(p => p.category === 'design').length }
+    { id: 'bot', name: 'Telegram Bots', count: allProjects.filter(p => p.category === 'bot').length },
+    { id: 'ai', name: 'AI Tools', count: allProjects.filter(p => p.category === 'ai').length },
+    { id: 'trading', name: 'Trading Tools', count: allProjects.filter(p => p.category === 'trading').length },
+    { id: 'automation', name: 'Automation', count: allProjects.filter(p => p.category === 'automation').length },
+    { id: 'mobile', name: 'Mobile Apps', count: allProjects.filter(p => p.category === 'mobile').length },
+    { id: 'web', name: 'Web Apps', count: allProjects.filter(p => p.category === 'web').length }
   ];
 
   return (
@@ -291,22 +373,22 @@ export default function Portfolio() {
               comprehensive digital solutions. From booking systems to e-commerce platforms, 
               I specialize in building scalable applications that solve real-world problems.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">50+</div>
-                <div className="text-gray-700 dark:text-gray-300">Projects</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+              <div className="text-center py-4">
+                <div className="text-2xl sm:text-3xl font-bold text-blue-600">50+</div>
+                <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">Projects</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">25+</div>
-                <div className="text-gray-700 dark:text-gray-300">Clients</div>
+              <div className="text-center py-4">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600">25+</div>
+                <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">Clients</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600">3+</div>
-                <div className="text-gray-700 dark:text-gray-300">Years</div>
+              <div className="text-center py-4">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-700">3+</div>
+                <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">Years</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600">100%</div>
-                <div className="text-gray-700 dark:text-gray-300">Satisfaction</div>
+              <div className="text-center py-4">
+                <div className="text-2xl sm:text-3xl font-bold text-slate-600">100%</div>
+                <div className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">Satisfaction</div>
               </div>
             </div>
           </div>
@@ -322,15 +404,15 @@ export default function Portfolio() {
               I offer a comprehensive range of development services to bring your ideas to life.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                <CardContent className="p-6 text-center">
+              <Card key={index} className="hover:shadow-xl hover:scale-105 transition-all duration-300 border border-gray-200 dark:border-gray-700 mb-4 sm:mb-0">
+                <CardContent className="p-4 sm:p-6 text-center space-y-4">
                   <div className={`inline-flex p-4 rounded-full ${service.color} text-white mb-4`}>
                     <service.icon className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">{service.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">{service.description}</p>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3 text-gray-900 dark:text-white leading-tight">{service.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base mb-4 leading-relaxed">{service.description}</p>
                   <div className="flex flex-wrap gap-1 justify-center">
                     {service.technologies.map((tech, techIndex) => (
                       <Badge key={techIndex} variant="secondary" className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
@@ -382,9 +464,9 @@ export default function Portfolio() {
               A selection of my best work showcasing different technologies and approaches.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
             {featuredProjects.slice(0, 3).map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} className="mb-4 sm:mb-0" />
             ))}
           </div>
           <div className="text-center">
@@ -397,7 +479,7 @@ export default function Portfolio() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-slate-700 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Your Project?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">

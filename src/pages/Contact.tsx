@@ -31,10 +31,9 @@ import { FaTelegram, FaWhatsapp, FaXTwitter } from 'react-icons/fa6';
 interface ContactForm {
   name: string;
   email: string;
-  subject: string;
   message: string;
-  projectType: string;
-  budget: string;
+  projectType?: string;
+  budget?: string;
 }
 
 export default function Contact() {
@@ -43,7 +42,6 @@ export default function Contact() {
   const [formData, setFormData] = useState<ContactForm>({
     name: '',
     email: '',
-    subject: '',
     message: '',
     projectType: '',
     budget: ''
@@ -169,7 +167,6 @@ export default function Contact() {
       setFormData({
         name: '',
         email: '',
-        subject: '',
         message: '',
         projectType: '',
         budget: ''
@@ -194,7 +191,7 @@ export default function Contact() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-12 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+      <section className="pt-24 pb-12 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-100 dark:from-gray-900 via-gray-850 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
@@ -221,6 +218,54 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* Quick Contact Options */}
+      <section className="py-8 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-700">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">Quick Contact Options</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* WhatsApp Contact */}
+              <Card className="border-2 border-green-200 dark:border-green-700 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 hover:shadow-lg transition-all duration-300 cursor-pointer group"
+                    onClick={() => window.open('https://wa.me/message/XAPGDNH6M4HGB1', '_blank')}>
+                <CardContent className="p-6 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <FaWhatsapp className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">WhatsApp Business</h3>
+                  <p className="text-green-700 dark:text-green-300 font-medium mb-2">+251 907 806 267</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                    Quick response • Business hours • File sharing
+                  </p>
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                    <FaWhatsapp className="w-4 h-4 mr-2" />
+                    Chat Now
+                  </Button>
+                </CardContent>
+              </Card>
+              
+              {/* Telegram Contact */}
+              <Card className="border-2 border-blue-200 dark:border-blue-700 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 hover:shadow-lg transition-all duration-300 cursor-pointer group"
+                    onClick={() => window.open('https://t.me/muay011', '_blank')}>
+                <CardContent className="p-6 text-center">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+                    <FaTelegram className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Telegram</h3>
+                  <p className="text-blue-700 dark:text-blue-300 font-medium mb-2">@muay011</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                    Instant messaging • 24/7 availability • Secure
+                  </p>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    <FaTelegram className="w-4 h-4 mr-2" />
+                    Message Me
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section className="py-16 bg-white dark:bg-gray-950">
         <div className="container mx-auto px-4">
@@ -228,18 +273,22 @@ export default function Contact() {
             
             {/* Contact Form */}
             <div>
-              <Card className="border border-gray-200 dark:border-gray-700">
+              <Card className="border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
                 <CardHeader>
-                  <CardTitle className="text-2xl text-gray-900 dark:text-white">Send Me a Message</CardTitle>
+                  <CardTitle className="text-2xl text-gray-900 dark:text-white flex items-center gap-2">
+                    <Mail className="w-6 h-6 text-blue-600" />
+                    Send Direct Message
+                  </CardTitle>
                   <p className="text-gray-600 dark:text-gray-300">
-                    Fill out the form below and I'll get back to you as soon as possible.
+                    Fill out this simple form and I'll get back to you within 24 hours.
                   </p>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Core Form Fields */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Name *
                         </label>
                         <Input
@@ -248,12 +297,12 @@ export default function Contact() {
                           placeholder="Your full name"
                           value={formData.name}
                           onChange={(e) => handleInputChange('name', e.target.value)}
-                          className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                          className="h-12 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                           required
                         />
                       </div>
                       <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Email *
                         </label>
                         <Input
@@ -262,93 +311,94 @@ export default function Contact() {
                           placeholder="your.email@example.com"
                           value={formData.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                          className="h-12 bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
                           required
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        Subject
-                      </label>
-                      <Input
-                        id="subject"
-                        type="text"
-                        placeholder="What's this about?"
-                        value={formData.subject}
-                        onChange={(e) => handleInputChange('subject', e.target.value)}
-                        className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="projectType" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Project Type
-                        </label>
-                        <select
-                          id="projectType"
-                          value={formData.projectType}
-                          onChange={(e) => handleInputChange('projectType', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                          <option value="">Select project type</option>
-                          {projectTypes.map((type) => (
-                            <option key={type} value={type}>{type}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="budget" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          Budget Range
-                        </label>
-                        <select
-                          id="budget"
-                          value={formData.budget}
-                          onChange={(e) => handleInputChange('budget', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                          <option value="">Select budget range</option>
-                          {budgetRanges.map((budget) => (
-                            <option key={budget} value={budget}>{budget}</option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         Message *
                       </label>
                       <Textarea
                         id="message"
-                        placeholder="Tell me about your project, goals, and any specific requirements..."
+                        placeholder="Tell me about your project, goals, timeline, budget, and any specific requirements..."
                         value={formData.message}
                         onChange={(e) => handleInputChange('message', e.target.value)}
-                        className="min-h-[120px] bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white"
+                        className="min-h-[140px] bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 resize-none"
                         required
                       />
                     </div>
 
+                    {/* Optional Project Details - Collapsible */}
+                    <details className="group">
+                      <summary className="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                        <span className="inline-flex items-center gap-2">
+                          <span>Project Details (Optional)</span>
+                          <span className="text-xs text-gray-500 group-open:hidden">Click to expand</span>
+                        </span>
+                      </summary>
+                      <div className="mt-4 space-y-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label htmlFor="projectType" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              Project Type
+                            </label>
+                            <select
+                              id="projectType"
+                              value={formData.projectType}
+                              onChange={(e) => handleInputChange('projectType', e.target.value)}
+                              className="w-full h-12 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option value="">Select project type</option>
+                              {projectTypes.map((type) => (
+                                <option key={type} value={type}>{type}</option>
+                              ))}
+                            </select>
+                          </div>
+                          <div>
+                            <label htmlFor="budget" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                              Budget Range
+                            </label>
+                            <select
+                              id="budget"
+                              value={formData.budget}
+                              onChange={(e) => handleInputChange('budget', e.target.value)}
+                              className="w-full h-12 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option value="">Select budget range</option>
+                              {budgetRanges.map((budget) => (
+                                <option key={budget} value={budget}>{budget}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </details>
+
                     <Button 
                       type="submit" 
                       size="lg" 
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+                      className="w-full h-12 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold transition-all duration-300 hover:shadow-lg"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
-                          Sending...
+                          <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2" />
+                          Sending Message...
                         </>
                       ) : (
                         <>
-                          <Send className="w-4 h-4 mr-2" />
+                          <Send className="w-5 h-5 mr-2" />
                           Send Message
                         </>
                       )}
                     </Button>
+                    
+                    <p className="text-xs text-center text-gray-500 dark:text-gray-400">
+                      I'll respond within 24 hours • All information is confidential
+                    </p>
                   </form>
                 </CardContent>
               </Card>
@@ -357,28 +407,28 @@ export default function Contact() {
             {/* Contact Information */}
             <div className="space-y-8">
               
-              {/* Contact Details */}
+              {/* Alternative Contact Methods */}
               <Card className="border border-gray-200 dark:border-gray-700">
                 <CardHeader>
-                  <CardTitle className="text-xl text-gray-900 dark:text-white">Get In Touch</CardTitle>
+                  <CardTitle className="text-xl text-gray-900 dark:text-white">Other Ways to Reach Me</CardTitle>
                   <p className="text-gray-600 dark:text-gray-300">
-                    I'm always excited to discuss new projects and opportunities.
+                    Choose your preferred communication method.
                   </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {contactInfo.map((info, index) => {
                     const Icon = info.icon;
                     return (
-                      <div key={index} className={`flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${info.primary ? 'border-2 border-green-500' : ''}`}>
-                        <div className={`p-2 ${info.primary ? 'bg-green-100 dark:bg-green-900' : 'bg-blue-100 dark:bg-blue-900'} rounded-lg`}>
+                      <div key={index} className={`flex items-center gap-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border ${info.primary ? 'border-green-200 bg-green-50 dark:border-green-700 dark:bg-green-900/10' : 'border-gray-200 dark:border-gray-600'}`}>
+                        <div className={`p-3 ${info.primary ? 'bg-green-100 dark:bg-green-900' : 'bg-blue-100 dark:bg-blue-900'} rounded-lg`}>
                           {info.isComponent ? (
-                            <Icon className={`w-5 h-5 ${info.primary ? 'text-green-600' : 'text-blue-600'}`} />
+                            <Icon className={`w-6 h-6 ${info.primary ? 'text-green-600' : 'text-blue-600'}`} />
                           ) : (
-                            <Icon className={`w-5 h-5 ${info.primary ? 'text-green-600' : 'text-blue-600'}`} />
+                            <Icon className={`w-6 h-6 ${info.primary ? 'text-green-600' : 'text-blue-600'}`} />
                           )}
                         </div>
                         <div className="flex-1">
-                          <p className="font-medium text-gray-900 dark:text-white">{info.label}</p>
+                          <p className="font-semibold text-gray-900 dark:text-white">{info.label}</p>
                           {info.href ? (
                             <a 
                               href={info.href}
@@ -389,10 +439,21 @@ export default function Contact() {
                               {info.value}
                             </a>
                           ) : (
-                            <span className="text-gray-700 dark:text-gray-300">{info.value}</span>
+                            <span className="text-gray-700 dark:text-gray-300 font-medium">{info.value}</span>
                           )}
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{info.description}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{info.description}</p>
                         </div>
+                        {info.href && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => window.open(info.href!, '_blank')}
+                            className={`${info.primary ? 'border-green-300 text-green-700 hover:bg-green-50 dark:border-green-600 dark:text-green-400' : 'border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-400'}`}
+                          >
+                            <ExternalLink className="w-4 h-4 mr-1" />
+                            Open
+                          </Button>
+                        )}
                       </div>
                     );
                   })}
@@ -567,7 +628,7 @@ export default function Contact() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-slate-700 text-white">
         <div className="container mx-auto px-4 text-center">
           <Coffee className="w-16 h-16 mx-auto mb-6 text-white/80" />
           <h2 className="text-3xl font-bold mb-4">Ready to Start Something Great?</h2>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
@@ -21,9 +21,13 @@ import {
   Zap,
   Users,
   Star,
-  ExternalLink
+  ExternalLink,
+  TrendingUp,
+  CheckCircle2,
+  Rocket
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Database, Server, Smartphone } from 'lucide-react';
 
 // Experience data
 const experience = [
@@ -119,53 +123,216 @@ const certifications = [
   { name: 'Google Analytics Certified', issuer: 'Google', year: '2021' }
 ];
 
-// Skills categories
+// Journey timeline data
+const journeyMilestones = [
+  {
+    year: '2016',
+    title: 'Started Computer Science',
+    description: 'Began my journey in Computer Science at University of Technology',
+    type: 'education',
+    icon: GraduationCap,
+    color: 'bg-blue-500'
+  },
+  {
+    year: '2018',
+    title: 'First Web Project',
+    description: 'Built my first full-stack web application using React and Node.js',
+    type: 'milestone',
+    icon: Code2,
+    color: 'bg-blue-600'
+  },
+  {
+    year: '2020',
+    title: 'Frontend Developer',
+    description: 'Started professional career at StartupX, focusing on React and TypeScript',
+    type: 'career',
+    icon: Briefcase,
+    color: 'bg-purple-500'
+  },
+  {
+    year: '2021',
+    title: 'Full Stack Developer',
+    description: 'Joined Tech Solutions Inc., expanded to backend development',
+    type: 'career',
+    icon: TrendingUp,
+    color: 'bg-purple-600'
+  },
+  {
+    year: '2022',
+    title: 'Senior Full Stack Developer',
+    description: 'Became freelance developer, serving clients worldwide',
+    type: 'career',
+    icon: Rocket,
+    color: 'bg-slate-600'
+  },
+  {
+    year: '2024',
+    title: '50+ Projects Completed',
+    description: 'Reached major milestone with 100% client satisfaction rate',
+    type: 'achievement',
+    icon: Award,
+    color: 'bg-blue-700'
+  }
+];
+
+// Skills categories with enhanced data
 const skillCategories = [
   {
-    category: 'Frontend',
+    category: 'Frontend Development',
+    icon: Code2,
+    color: 'text-blue-600',
     skills: [
-      { name: 'React/Next.js', level: 95 },
-      { name: 'TypeScript', level: 90 },
-      { name: 'Vue.js', level: 85 },
-      { name: 'HTML/CSS', level: 95 },
-      { name: 'Tailwind CSS', level: 90 }
+      { name: 'React/Next.js', level: 95, color: 'bg-blue-500' },
+      { name: 'TypeScript', level: 90, color: 'bg-blue-400' },
+      { name: 'Vue.js', level: 85, color: 'bg-blue-600' },
+      { name: 'HTML/CSS', level: 95, color: 'bg-purple-500' },
+      { name: 'Tailwind CSS', level: 90, color: 'bg-purple-400' }
     ]
   },
   {
-    category: 'Backend',
+    category: 'Backend Development',
+    icon: Server,
+    color: 'text-purple-600',
     skills: [
-      { name: 'Node.js', level: 90 },
-      { name: 'Express.js', level: 85 },
-      { name: 'Python', level: 75 },
-      { name: 'REST APIs', level: 90 },
-      { name: 'GraphQL', level: 70 }
+      { name: 'Node.js', level: 90, color: 'bg-purple-600' },
+      { name: 'Express.js', level: 85, color: 'bg-slate-600' },
+      { name: 'Python', level: 75, color: 'bg-blue-700' },
+      { name: 'REST APIs', level: 90, color: 'bg-purple-500' },
+      { name: 'GraphQL', level: 70, color: 'bg-slate-500' }
     ]
   },
   {
-    category: 'Database',
+    category: 'Database & Cloud',
+    icon: Database,
+    color: 'text-purple-600',
     skills: [
-      { name: 'PostgreSQL', level: 85 },
-      { name: 'MongoDB', level: 80 },
-      { name: 'MySQL', level: 75 },
-      { name: 'Redis', level: 70 },
-      { name: 'Prisma ORM', level: 80 }
+      { name: 'PostgreSQL', level: 85, color: 'bg-blue-700' },
+      { name: 'MongoDB', level: 80, color: 'bg-purple-700' },
+      { name: 'AWS/Cloud', level: 75, color: 'bg-slate-600' },
+      { name: 'Docker', level: 70, color: 'bg-blue-400' },
+      { name: 'Redis', level: 70, color: 'bg-slate-500' }
     ]
   },
   {
-    category: 'Mobile & Others',
+    category: 'Mobile & Tools',
+    icon: Smartphone,
+    color: 'text-blue-600',
     skills: [
-      { name: 'React Native', level: 80 },
-      { name: 'Flutter', level: 65 },
-      { name: 'AWS/Cloud', level: 75 },
-      { name: 'Docker', level: 70 },
-      { name: 'Git/GitHub', level: 95 }
+      { name: 'React Native', level: 80, color: 'bg-blue-600' },
+      { name: 'Flutter', level: 65, color: 'bg-blue-500' },
+      { name: 'Git/GitHub', level: 95, color: 'bg-slate-800' },
+      { name: 'Figma/Design', level: 75, color: 'bg-purple-600' },
+      { name: 'DevOps', level: 70, color: 'bg-purple-500' }
     ]
   }
 ];
 
+// Animated Skill Bar Component
+interface AnimatedSkillBarProps {
+  skill: {
+    name: string;
+    level: number;
+    color: string;
+  };
+  inView: boolean;
+}
+
+const AnimatedSkillBar: React.FC<AnimatedSkillBarProps> = ({ skill, inView }) => {
+  const [animatedLevel, setAnimatedLevel] = useState(0);
+
+  useEffect(() => {
+    if (inView) {
+      const timer = setTimeout(() => {
+        setAnimatedLevel(skill.level);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [inView, skill.level]);
+
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between items-center">
+        <span className="font-medium text-gray-900 dark:text-white text-sm">{skill.name}</span>
+        <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">{skill.level}%</span>
+      </div>
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+        <div 
+          className={`h-2.5 rounded-full transition-all duration-1000 ease-out ${skill.color}`}
+          style={{ width: `${animatedLevel}%` }}
+        ></div>
+      </div>
+    </div>
+  );
+};
+
+// Timeline Component
+interface TimelineItemProps {
+  milestone: {
+    year: string;
+    title: string;
+    description: string;
+    type: string;
+    icon: React.ComponentType<any>;
+    color: string;
+  };
+  index: number;
+}
+
+const TimelineItem: React.FC<TimelineItemProps> = ({ milestone, index }) => {
+  const Icon = milestone.icon;
+  
+  return (
+    <div className="flex items-center group hover:scale-105 transition-all duration-300">
+      <div className="flex flex-col items-center mr-6">
+        <div className={`w-12 h-12 ${milestone.color} rounded-full flex items-center justify-center text-white shadow-lg group-hover:shadow-xl transition-shadow`}>
+          <Icon className="w-6 h-6" />
+        </div>
+        <div className="w-1 h-12 bg-gray-300 dark:bg-gray-600 mt-2 last:hidden" />
+      </div>
+      <div className="flex-1 pb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-3 mb-2">
+            <Badge className={`${milestone.color} text-white text-xs`}>
+              {milestone.year}
+            </Badge>
+            <Badge variant="outline" className="text-xs">
+              {milestone.type}
+            </Badge>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
+            {milestone.title}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300 text-sm">
+            {milestone.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function About() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'experience' | 'education' | 'skills'>('experience');
+  const [activeTab, setActiveTab] = useState<'journey' | 'experience' | 'education' | 'skills'>('journey');
+  const [skillsInView, setSkillsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSkillsInView(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    const skillsSection = document.getElementById('skills-section');
+    if (skillsSection) {
+      observer.observe(skillsSection);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const personalInfo = {
     name: 'Munir Ayub',
@@ -180,6 +347,7 @@ export default function About() {
   };
 
   const tabs = [
+    { id: 'journey', label: 'Journey', icon: TrendingUp },
     { id: 'experience', label: 'Experience', icon: Briefcase },
     { id: 'education', label: 'Education', icon: GraduationCap },
     { id: 'skills', label: 'Skills', icon: Code2 }
@@ -190,7 +358,7 @@ export default function About() {
       <Navbar />
       
       {/* Hero Section */}
-      <section className="pt-24 pb-12 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+      <section className="pt-24 pb-12 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-100 dark:from-gray-900 via-gray-850 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 p-1">
@@ -297,14 +465,14 @@ export default function About() {
           <div className="max-w-6xl mx-auto">
             {/* Tab Navigation */}
             <div className="flex justify-center mb-12">
-              <div className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+              <div className="flex flex-wrap bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
                   return (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id as any)}
-                      className={`flex items-center gap-2 px-6 py-3 rounded-md font-medium transition-all ${
+                      className={`flex items-center gap-2 px-4 py-3 rounded-md font-medium transition-all ${
                         activeTab === tab.id
                           ? 'bg-white dark:bg-gray-700 text-blue-600 shadow-sm'
                           : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
@@ -317,6 +485,20 @@ export default function About() {
                 })}
               </div>
             </div>
+
+            {/* Journey Tab */}
+            {activeTab === 'journey' && (
+              <div className="space-y-8">
+                <h3 className="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">My Journey</h3>
+                <div className="max-w-4xl mx-auto">
+                  <div className="space-y-0">
+                    {journeyMilestones.map((milestone, index) => (
+                      <TimelineItem key={index} milestone={milestone} index={index} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Experience Tab */}
             {activeTab === 'experience' && (
@@ -428,32 +610,31 @@ export default function About() {
 
             {/* Skills Tab */}
             {activeTab === 'skills' && (
-              <div className="space-y-8">
+              <div className="space-y-8" id="skills-section">
                 <h3 className="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">Technical Skills</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {skillCategories.map((category, index) => (
-                    <Card key={index} className="border border-gray-200 dark:border-gray-700">
-                      <CardContent className="p-6">
-                        <h4 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">{category.category}</h4>
-                        <div className="space-y-4">
-                          {category.skills.map((skill, skillIndex) => (
-                            <div key={skillIndex} className="space-y-2">
-                              <div className="flex justify-between items-center">
-                                <span className="font-medium text-gray-900 dark:text-white">{skill.name}</span>
-                                <span className="text-sm text-gray-700 dark:text-gray-300">{skill.level}%</span>
-                              </div>
-                              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                <div 
-                                  className="bg-blue-600 h-2 rounded-full transition-all duration-1000"
-                                  style={{ width: `${skill.level}%` }}
-                                ></div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                  {skillCategories.map((category, index) => {
+                    const CategoryIcon = category.icon;
+                    return (
+                      <Card key={index} className="border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
+                        <CardContent className="p-6">
+                          <div className="flex items-center gap-3 mb-6">
+                            <CategoryIcon className={`w-6 h-6 ${category.color}`} />
+                            <h4 className="text-xl font-semibold text-gray-900 dark:text-white">{category.category}</h4>
+                          </div>
+                          <div className="space-y-4">
+                            {category.skills.map((skill, skillIndex) => (
+                              <AnimatedSkillBar 
+                                key={skillIndex} 
+                                skill={skill} 
+                                inView={skillsInView}
+                              />
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -494,7 +675,7 @@ export default function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-slate-700 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Let's Work Together</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">

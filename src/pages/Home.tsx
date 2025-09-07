@@ -8,7 +8,6 @@ import ProjectCard, { Project } from '@/components/portfolio/ProjectCard';
 import { TextArcEffect } from '@/components/ui/text-arc-effect';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { 
   Code, 
@@ -65,33 +64,33 @@ const featuredProjects: Project[] = [
   }
 ];
 
-// Services overview for home page
-const services = [
-  {
-    icon: Globe,
-    title: 'Web Development',
-    description: 'Modern, responsive web applications built with React, Next.js, and TypeScript.',
-    color: 'bg-blue-500'
-  },
-  {
-    icon: Smartphone,
-    title: 'Mobile Apps',
-    description: 'Cross-platform mobile applications using React Native and Flutter.',
-    color: 'bg-green-500'
-  },
-  {
-    icon: Code,
-    title: 'Full Stack Solutions',
-    description: 'Complete end-to-end solutions with backend APIs, databases, and deployment.',
-    color: 'bg-purple-500'
-  },
-  {
-    icon: Palette,
-    title: 'UI/UX Design',
-    description: 'User-centered design with modern interfaces and seamless experiences.',
-    color: 'bg-pink-500'
-  }
-];
+// Services overview for home page (unused but kept for potential future use)
+// const services = [
+//   {
+//     icon: Globe,
+//     title: 'Web Development',
+//     description: 'Modern, responsive web applications built with React, Next.js, and TypeScript.',
+//     color: 'bg-blue-500'
+//   },
+//   {
+//     icon: Smartphone,
+//     title: 'Mobile Apps',
+//     description: 'Cross-platform mobile applications using React Native and Flutter.',
+//     color: 'bg-green-500'
+//   },
+//   {
+//     icon: Code,
+//     title: 'Full Stack Solutions',
+//     description: 'Complete end-to-end solutions with backend APIs, databases, and deployment.',
+//     color: 'bg-purple-500'
+//   },
+//   {
+//     icon: Palette,
+//     title: 'UI/UX Design',
+//     description: 'User-centered design with modern interfaces and seamless experiences.',
+//     color: 'bg-pink-500'
+//   }
+// ];
 
 // Why choose me section
 const highlights = [
@@ -172,9 +171,9 @@ export default function Home() {
               Check out some of my recent work and the technologies I've used.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12">
             {featuredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} className="mb-4 sm:mb-0" />
             ))}
           </div>
           <div className="text-center">
@@ -198,14 +197,14 @@ export default function Home() {
               I bring passion, expertise, and dedication to every project.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
             {highlights.map((highlight, index) => (
-              <div key={index} className="text-center">
+              <div key={index} className="text-center px-4 sm:px-0">
                 <div className={`inline-flex p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-4`}>
                   <highlight.icon className={`w-8 h-8 ${highlight.color}`} />
                 </div>
-                <h3 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">{highlight.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{highlight.description}</p>
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 text-gray-900 dark:text-white leading-tight">{highlight.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base leading-relaxed">{highlight.description}</p>
               </div>
             ))}
           </div>
@@ -213,7 +212,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-slate-100 dark:from-gray-900 via-gray-850 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">Client Testimonials</h2>
@@ -261,7 +260,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-slate-700 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Your Project?</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
